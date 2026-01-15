@@ -6,11 +6,17 @@ import os
 from dotenv import load_dotenv
 import requests
 # Using the official SDK now
-from fastpix import Client
+try:
+    from fastpix import Client
+except ImportError:
+    from fastpix_python import Fastpix as Client
 
 load_dotenv()
 
-models.Base.metadata.create_all(bind=database.engine)
+try:
+    models.Base.metadata.create_all(bind=database.engine)
+except Exception as e:
+    print(f"Warning: Could not connect to DB to create tables: {e}")
 
 app = FastAPI()
 
