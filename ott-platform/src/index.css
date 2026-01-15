@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap');
+
+:root {
+  --comic-primary: #ff4d4d;
+  --comic-secondary: #ffd700;
+  --comic-accent: #33ccff;
+  --comic-bg: #f0f0f0;
+  --comic-text: #1a1a1a;
+  --comic-border: 3px solid #000000;
+  --comic-shadow: 4px 4px 0px 0px #000000;
+  --font-heading: 'Bangers', cursive;
+  --font-body: 'Comic Neue', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--comic-bg);
+  background-image: radial-gradient(#d1d1d1 15%, transparent 16%);
+  background-size: 20px 20px;
+  color: var(--comic-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 0;
+}
+
+button {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  background-color: var(--comic-secondary);
+  border: var(--comic-border);
+  box-shadow: var(--comic-shadow);
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.comic-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+  border-left: 2px solid #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--comic-primary);
+  border: 2px solid #000;
+}
