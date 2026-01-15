@@ -1,2 +1,3 @@
-ott-backend/.env
+.env
 /ott-backend/__pycache__
+ott-backend/.env
