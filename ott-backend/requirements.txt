@@ -5,3 +5,6 @@ psycopg2-binary
 python-dotenv
 requests
 git+https://github.com/FastPix/fastpix-python.git
+supabase
+gotrue
+websockets>=13.0
