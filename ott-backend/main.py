@@ -51,6 +51,10 @@ app.add_middleware(
 FASTPIX_ACCESS_TOKEN = os.getenv("FASTPIX_ACCESS_TOKEN_ID")
 FASTPIX_SECRET_KEY = os.getenv("FASTPIX_SECRET_KEY")
 
+# Auth Router
+import auth
+app.include_router(auth.router)
+
 # Initialize client only if creds are present to avoid startup errors during dev
 client = None
 if FASTPIX_ACCESS_TOKEN and FASTPIX_SECRET_KEY and Client:
