@@ -10,9 +10,7 @@ const Home = () => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                // Replace with your actual machine IP/Host if testing on Android device
-                // For web (localhost), this works.
-                const response = await fetch('http://localhost:8080/movies/');
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/movies/`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch movies');
                 }
