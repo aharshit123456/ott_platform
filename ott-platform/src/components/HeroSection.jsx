@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const HeroSection = ({ movie }) => {
-    if (!movie) return null;
+const HeroSection = ({ movies }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Auto-rotation logic
+    useEffect(() => {
+        if (!movies || movies.length === 0) return;
+
+        const interval = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % movies.length);
+        }, 5000); // Rotate every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [movies]);
+
+    if (!movies || movies.length === 0) return null;
+
+    const movie = movies[currentIndex];
+
+    const nextSlide = () => setCurrentIndex((currentIndex + 1) % movies.length);
+    const prevSlide = () => setCurrentIndex((currentIndex - 1 + movies.length) % movies.length);
 
     return (
         <section className="hero-section" style={{
@@ -17,18 +35,22 @@ const HeroSection = ({ movie }) => {
             display: 'flex',
             alignItems: 'flex-end'
         }}>
-            {/* Background Image */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                backgroundImage: `url(${movie.thumbnail})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                opacity: 0.8
-            }}></div>
+            {/* Background Image - with Transition Effect Hack */}
+            {movies.map((m, i) => (
+                <div key={m.id} style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: `url(${m.thumbnail})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    opacity: i === currentIndex ? 0.8 : 0,
+                    transition: 'opacity 1s ease-in-out',
+                    zIndex: 0
+                }}></div>
+            ))}
 
             {/* Comic Panel Overlay (Gradient) */}
             <div style={{
@@ -37,10 +59,11 @@ const HeroSection = ({ movie }) => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(to top, black 20%, transparent 80%)'
+                background: 'linear-gradient(to top, black 20%, transparent 80%)',
+                zIndex: 1
             }}></div>
 
-            {/* "Page 1 Panel 1" Tag */}
+            {/* "Page 1 Panel X" Tag */}
             <div style={{
                 position: 'absolute',
                 top: '20px',
@@ -51,10 +74,19 @@ const HeroSection = ({ movie }) => {
                 padding: '5px 10px',
                 border: '2px solid black',
                 transform: 'rotate(-2deg)',
-                boxShadow: '3px 3px 0 black'
+                boxShadow: '3px 3px 0 black',
+                zIndex: 2
             }}>
-                PAGE 1 | PANEL 1
+                PAGE 1 | PANEL {currentIndex + 1}
             </div>
+
+            {/* Navigation Buttons */}
+            <button onClick={prevSlide} style={{
+                position: 'absolute', top: '50%', left: '10px', zIndex: 10, borderRadius: '50%', width: '40px', height: '40px', padding: 0, transform: 'translateY(-50%)'
+            }}>&lt;</button>
+            <button onClick={nextSlide} style={{
+                position: 'absolute', top: '50%', right: '10px', zIndex: 10, borderRadius: '50%', width: '40px', height: '40px', padding: 0, transform: 'translateY(-50%)'
+            }}>&gt;</button>
 
             {/* Content Box */}
             <div style={{
@@ -70,7 +102,8 @@ const HeroSection = ({ movie }) => {
                     border: 'var(--comic-border)',
                     maxWidth: '600px',
                     boxShadow: '5px 5px 0 black',
-                    marginBottom: '20px'
+                    marginBottom: '20px',
+                    transition: 'all 0.5s' // Smooth transition for text box if needed
                 }}>
                     <h2 style={{
                         fontSize: '3rem',

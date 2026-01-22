@@ -46,7 +46,8 @@ const Home = () => {
 
             {!loading && !error && videos.length > 0 && (
                 <>
-                    <HeroSection movie={videos[0]} />
+                    {/* Pass all videos for carousel */}
+                    <HeroSection movies={videos} />
                     <ComicShelf title="Fresh from the Ink!" items={videos} />
                     <ComicShelf title="Trending Issues" items={[...videos].reverse()} />
                 </>

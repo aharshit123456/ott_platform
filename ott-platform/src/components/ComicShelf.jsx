@@ -1,16 +1,60 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const ComicShelf = ({ title, items }) => {
     const scrollRef = useRef(null);
+    // Triple items to create buffer for infinite loop
+    const [displayItems, setDisplayItems] = useState([]);
+
+    useEffect(() => {
+        if (items && items.length > 0) {
+            // Create 3 sets for smooth infinite scroll
+            setDisplayItems([...items, ...items, ...items]);
+        }
+    }, [items]);
+
+    // Initialize scroll to middle set
+    useEffect(() => {
+        if (scrollRef.current && items && items.length > 0) {
+            // Rough calculation: scroll to 1/3 width
+            // Assuming card width + gap approx 240px (220 width + 20 gap)
+            // We give it a small timeout to let render happen
+            setTimeout(() => {
+                if (scrollRef.current) {
+                    const singleSetWidth = items.length * 240;
+                    scrollRef.current.scrollLeft = singleSetWidth;
+                }
+            }, 100);
+        }
+    }, [items]); // Rely on items change, not displayItems to avoid loops
+
+    const handleScroll = () => {
+        if (!scrollRef.current || !items || items.length === 0) return;
+
+        const { scrollLeft, scrollWidth } = scrollRef.current;
+        const singleSetWidth = items.length * 240; // Approx width of one set
+
+        // Safety check if width is 0
+        if (singleSetWidth === 0) return;
+
+        // If scrolled to near start (first set), jump to middle set (start of 2nd set)
+        if (scrollLeft < 50) {
+            scrollRef.current.scrollLeft = singleSetWidth + scrollLeft;
+        }
+        // If scrolled to near end (into 3rd set), jump to middle set
+        else if (scrollLeft >= singleSetWidth * 2) {
+            scrollRef.current.scrollLeft = scrollLeft - singleSetWidth;
+        }
+    };
 
     const scroll = (direction) => {
         if (scrollRef.current) {
-            const { current } = scrollRef;
             const scrollAmount = 300;
-            current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+            scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
         }
     };
+
+    if (!items || items.length === 0) return null;
 
     return (
         <div className="comic-shelf" style={{ marginBottom: '40px', position: 'relative' }}>
@@ -38,6 +82,7 @@ const ComicShelf = ({ title, items }) => {
             {/* Scroll Container */}
             <div
                 ref={scrollRef}
+                onScroll={handleScroll}
                 style={{
                     display: 'flex',
                     overflowX: 'auto',
@@ -47,8 +92,9 @@ const ComicShelf = ({ title, items }) => {
                     msOverflowStyle: 'none'
                 }}
             >
-                {items.map((item) => (
-                    <div key={item.id} style={{ minWidth: '220px', maxWidth: '220px', flex: '0 0 auto' }}>
+                {displayItems.map((item, index) => (
+                    // Index as key is necessary here because of duplicates
+                    <div key={`${item.id}-${index}`} style={{ minWidth: '220px', maxWidth: '220px', flex: '0 0 auto' }}>
                         <Link to={`/watch/${item.id}`} style={{ textDecoration: 'none' }}>
                             <div className="comic-card" style={{
                                 backgroundColor: 'white',
@@ -113,8 +159,7 @@ const ComicShelf = ({ title, items }) => {
                     </div>
                 ))}
 
-                {/* Spacer for right padding */}
-                <div style={{ minWidth: '20px' }}></div>
+                {/* Spacer removed */}
             </div>
 
             {/* Shelf Wood Look */}
