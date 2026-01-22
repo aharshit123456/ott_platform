@@ -36,3 +36,43 @@ def update_movie(db, movie_id: int, updates: dict):
     if response.data:
         return response.data[0]
     return None
+
+def add_to_watchlist(db, watchlist_entry: schemas.WatchlistCreate):
+    data = {
+        "user_id": watchlist_entry.user_id,
+        "movie_id": watchlist_entry.movie_id
+    }
+    # Check if exists
+    existing = supabase.table("watchlist").select("id").eq("user_id", data["user_id"]).eq("movie_id", data["movie_id"]).execute()
+    if existing.data:
+        return existing.data[0]
+        
+    response = supabase.table("watchlist").insert(data).execute()
+    if response.data:
+        return response.data[0]
+    return None
+
+def remove_from_watchlist(db, user_id: str, movie_id: int):
+    response = supabase.table("watchlist").delete().eq("user_id", user_id).eq("movie_id", movie_id).execute()
+    return response.data
+
+def get_watchlist(db, user_id: str):
+    # Assuming foreign key relation exists in Supabase
+    response = supabase.table("watchlist").select("*, movies(*)").eq("user_id", user_id).execute()
+    return response.data
+
+def create_review(db, review: schemas.ReviewCreate):
+    data = {
+        "user_id": review.user_id,
+        "movie_id": review.movie_id,
+        "rating": review.rating,
+        "comment": review.comment
+    }
+    response = supabase.table("reviews").insert(data).execute()
+    if response.data:
+        return response.data[0]
+    return None
+
+def get_reviews(db, movie_id: int):
+    response = supabase.table("reviews").select("*").eq("movie_id", movie_id).execute()
+    return response.data

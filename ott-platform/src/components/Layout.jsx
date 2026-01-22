@@ -68,6 +68,20 @@ const Layout = ({ children }) => {
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                     {user ? (
                         <>
+                            <Link to="/pull-list" style={{
+                                marginRight: '15px',
+                                textDecoration: 'none',
+                                color: 'black',
+                                fontWeight: 'bold',
+                                fontSize: '1.2rem',
+                                fontFamily: 'var(--font-heading)',
+                                borderBottom: '2px solid transparent'
+                            }}
+                                onMouseEnter={(e) => e.target.style.borderBottom = '2px solid black'}
+                                onMouseLeave={(e) => e.target.style.borderBottom = '2px solid transparent'}
+                            >
+                                MY PULL LIST
+                            </Link>
                             <div className="user-badge" style={{
                                 backgroundColor: 'white',
                                 border: 'var(--comic-border)',

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import ContentGrid from '../components/ContentGrid';
+import HeroSection from '../components/HeroSection';
+import ComicShelf from '../components/ComicShelf';
+import ClickEffects from '../components/ClickEffects';
 
 const Home = () => {
     const [videos, setVideos] = useState([]);
@@ -38,33 +40,21 @@ const Home = () => {
 
     return (
         <Layout>
-            <section style={{
-                marginBottom: '30px',
-                border: 'var(--comic-border)',
-                padding: '20px',
-                backgroundColor: '#fff',
-                position: 'relative'
-            }}>
-                <h2 style={{ fontSize: '2.5rem', textDecoration: 'underline decoration-wavy' }}>New Releases!</h2>
-                <div style={{
-                    position: 'absolute',
-                    top: '-15px',
-                    right: '-15px',
-                    backgroundColor: 'var(--comic-accent)',
-                    padding: '10px',
-                    border: 'var(--comic-border)',
-                    transform: 'rotate(5deg)',
-                    fontWeight: 'bold',
-                    zIndex: 1
-                }}>
-                    POW!
-                </div>
-                <p>Fresh from the render farm to your screen.</p>
-            </section>
-
+            <ClickEffects />
             {loading && <p>Loading comics...</p>}
             {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-            {!loading && !error && <ContentGrid items={videos} />}
+
+            {!loading && !error && videos.length > 0 && (
+                <>
+                    <HeroSection movie={videos[0]} />
+                    <ComicShelf title="Fresh from the Ink!" items={videos} />
+                    <ComicShelf title="Trending Issues" items={[...videos].reverse()} />
+                </>
+            )}
+
+            {!loading && !error && videos.length === 0 && (
+                <p>No comics found in the archives!</p>
+            )}
         </Layout>
     );
 };

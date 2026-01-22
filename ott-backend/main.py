@@ -221,3 +221,26 @@ def refresh_playback_id(movie_id: int, db = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/watchlist/", response_model=schemas.Watchlist)
+def add_to_watchlist(item: schemas.WatchlistCreate, db = Depends(get_db)):
+    return crud.add_to_watchlist(db, item)
+
+@app.delete("/watchlist/{user_id}/{movie_id}")
+def remove_from_watchlist(user_id: str, movie_id: int, db = Depends(get_db)):
+    return crud.remove_from_watchlist(db, user_id, movie_id)
+
+@app.get("/watchlist/{user_id}")
+def get_watchlist(user_id: str, db = Depends(get_db)):
+    return crud.get_watchlist(db, user_id)
+
+@app.post("/reviews/", response_model=schemas.Review)
+def create_review(review: schemas.ReviewCreate, db = Depends(get_db)):
+    return crud.create_review(db, review)
+
+@app.get("/reviews/{movie_id}", response_model=list[schemas.Review])
+def get_reviews(movie_id: int, db = Depends(get_db)):
+    return crud.get_reviews(db, movie_id)
