@@ -261,8 +261,8 @@ def remove_from_watchlist(user_id: str, movie_id: int, db = Depends(get_db), tok
     return crud.remove_from_watchlist(db, user_id, movie_id, token.credentials)
 
 @app.get("/watchlist/{user_id}")
-def get_watchlist(user_id: str, db = Depends(get_db)):
-    return crud.get_watchlist(db, user_id)
+def get_watchlist(user_id: str, db = Depends(get_db), token: HTTPAuthorizationCredentials = Depends(security)):
+    return crud.get_watchlist(db, user_id, token.credentials)
 
 @app.post("/reviews/", response_model=schemas.Review)
 def create_review(review: schemas.ReviewCreate, db = Depends(get_db), token: HTTPAuthorizationCredentials = Depends(security)):

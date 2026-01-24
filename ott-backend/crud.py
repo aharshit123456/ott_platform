@@ -67,9 +67,10 @@ def remove_from_watchlist(db, user_id: str, movie_id: int, token: str = None):
     response = sb_client.table("watchlist").delete().eq("user_id", user_id).eq("movie_id", movie_id).execute()
     return response.data
 
-def get_watchlist(db, user_id: str):
+def get_watchlist(db, user_id: str, token: str = None):
     # Assuming foreign key relation exists in Supabase
-    response = supabase.table("watchlist").select("*, movies(*)").eq("user_id", user_id).execute()
+    sb_client = get_authenticated_client(token) if token else supabase
+    response = sb_client.table("watchlist").select("*, movies(*)").eq("user_id", user_id).execute()
     return response.data
 
 def create_review(db, review: schemas.ReviewCreate, token: str = None):

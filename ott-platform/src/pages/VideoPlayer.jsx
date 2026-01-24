@@ -40,7 +40,13 @@ const VideoPlayer = () => {
                 }
                 setNumericId(resolvedId);
 
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`);
+                const token = (await supabase.auth.getSession()).data.session?.access_token;
+
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 if (res.ok) {
                     const data = await res.json();
                     const found = data.find(item => item.movie_id.toString() === resolvedId);
