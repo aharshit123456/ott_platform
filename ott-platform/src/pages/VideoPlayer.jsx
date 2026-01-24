@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import FastPixPlayer from '../components/FastPixPlayer';
 import { useAuth } from '../context/AuthContext';
 import ClickEffects from '../components/ClickEffects';
+import { supabase } from '../supabaseClient';
 
 const VideoPlayer = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const VideoPlayer = () => {
     const [userRating, setUserRating] = useState(0);
     const [userComment, setUserComment] = useState("");
     const [loadingReviews, setLoadingReviews] = useState(true);
+    const [numericId, setNumericId] = useState(null);
 
     // Mock ID logic from before
     const playbackId = id.includes('demo')
@@ -27,20 +29,21 @@ const VideoPlayer = () => {
             if (!user) return;
             try {
                 // 1. Resolve playback ID to integer Movie ID
-                let numericId = id;
+                let resolvedId = id;
                 if (id.length > 10) { // Naive check for UUID vs Int
                     const movieRes = await fetch(`${import.meta.env.VITE_API_URL}/movies/`);
                     if (movieRes.ok) {
                         const allMovies = await movieRes.json();
                         const match = allMovies.find(m => m.fastpix_playback_id === id);
-                        if (match) numericId = match.id.toString();
+                        if (match) resolvedId = match.id.toString();
                     }
                 }
+                setNumericId(resolvedId);
 
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`);
                 if (res.ok) {
                     const data = await res.json();
-                    const found = data.find(item => item.movie_id.toString() === numericId);
+                    const found = data.find(item => item.movie_id.toString() === resolvedId);
                     setIsInPullList(!!found);
                 }
             } catch (e) { console.error(e); }
@@ -73,18 +76,31 @@ const VideoPlayer = () => {
 
         try {
             if (isInPullList) {
-                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${id}`, { method: 'DELETE' });
+                // await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${numericId || id}`, { method: 'DELETE' });
+                const { error } = await supabase
+                    .from('watchlist')
+                    .delete()
+                    .eq('user_id', user.id)
+                    .eq('movie_id', parseInt(numericId) || 1);
+
+                if (error) throw error;
                 setIsInPullList(false);
             } else {
-                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: user.id, movie_id: parseInt(id) || 1 }) // Fallback to 1 if ID is string
-                });
+                // await fetch(`${import.meta.env.VITE_API_URL}/watchlist/`, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ user_id: user.id, movie_id: parseInt(numericId) || 1 }) // Use resolved ID
+                // });
+                const { error } = await supabase
+                    .from('watchlist')
+                    .insert([{ user_id: user.id, movie_id: parseInt(numericId) || 1 }]);
+
+                if (error) throw error;
                 setIsInPullList(true);
             }
         } catch (e) {
             console.error("Watchlist toggle failed", e);
+            alert(`Watchlist error: ${e.message}`);
         }
     };
 
@@ -93,24 +109,39 @@ const VideoPlayer = () => {
         if (userRating === 0) return alert("Rate it first!");
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: user.id,
-                    movie_id: parseInt(id) || 1,
-                    rating: userRating,
-                    comment: userComment
-                })
-            });
-            if (res.ok) {
-                const newReview = await res.json();
+            // const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/`, {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({
+            //         user_id: user.id,
+            //         movie_id: parseInt(numericId) || 1, // Use resolved ID
+            //         rating: userRating,
+            //         comment: userComment
+            //     })
+            // });
+            const { data, error } = await supabase
+                .from('reviews')
+                .insert([
+                    {
+                        user_id: user.id,
+                        movie_id: parseInt(numericId) || 1,
+                        rating: userRating,
+                        comment: userComment
+                    }
+                ])
+                .select();
+
+            if (error) throw error;
+
+            if (data) {
+                const newReview = data[0];
                 setReviews([...reviews, newReview]);
                 setUserComment("");
                 setUserRating(0);
             }
         } catch (e) {
             console.error("Review failed", e);
+            alert(`Review error: ${e.message}`);
         }
     };
 
