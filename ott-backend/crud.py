@@ -88,3 +88,15 @@ def create_review(db, review: schemas.ReviewCreate, token: str = None):
 def get_reviews(db, movie_id: int):
     response = supabase.table("reviews").select("*").eq("movie_id", movie_id).execute()
     return response.data
+
+def get_movie_by_playback_id(db, playback_id: str):
+    response = supabase.table("movies").select("*").eq("fastpix_playback_id", playback_id).execute()
+    if response.data:
+        return response.data[0]
+    return None
+
+def get_movie_by_media_id(db, media_id: str):
+    response = supabase.table("movies").select("*").eq("fastpix_media_id", media_id).execute()
+    if response.data:
+        return response.data[0]
+    return None

@@ -268,6 +268,19 @@ def get_watchlist(user_id: str, db = Depends(get_db)):
 def create_review(review: schemas.ReviewCreate, db = Depends(get_db), token: HTTPAuthorizationCredentials = Depends(security)):
     return crud.create_review(db, review, token.credentials)
 
-@app.get("/reviews/{movie_id}", response_model=list[schemas.Review])
-def get_reviews(movie_id: int, db = Depends(get_db)):
-    return crud.get_reviews(db, movie_id)
+@app.get("/reviews/{movie_identifier}", response_model=list[schemas.Review])
+def get_reviews(movie_identifier: str, db = Depends(get_db)):
+    # Check if identifier is an integer
+    if movie_identifier.isdigit():
+        return crud.get_reviews(db, int(movie_identifier))
+    
+    # Otherwise assume it's a playback ID and look it up
+    movie = crud.get_movie_by_playback_id(db, movie_identifier)
+    if not movie:
+        # Try media ID as fallback
+        movie = crud.get_movie_by_media_id(db, movie_identifier)
+        
+    if not movie:
+        raise HTTPException(status_code=404, detail="Movie not found for given ID")
+        
+    return crud.get_reviews(db, movie['id'])
