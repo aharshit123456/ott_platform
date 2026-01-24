@@ -1,6 +1,7 @@
 # from sqlalchemy.orm import Session
 # import models, schemas
-from supabase_client import supabase
+from supabase_client import supabase, url, key
+from supabase import create_client, ClientOptions
 import schemas
 
 # Note: We are now using Supabase API directly due to DB connection issues
@@ -37,18 +38,23 @@ def update_movie(db, movie_id: int, updates: dict):
         return response.data[0]
     return None
 
-def add_to_watchlist(db, watchlist_entry: schemas.WatchlistCreate):
+def get_authenticated_client(token: str):
+    return create_client(url, key, options=ClientOptions(headers={"Authorization": f"Bearer {token}"}))
+
+def add_to_watchlist(db, watchlist_entry: schemas.WatchlistCreate, token: str = None):
     try:
+        sb_client = get_authenticated_client(token) if token else supabase
+        
         data = {
             "user_id": watchlist_entry.user_id,
             "movie_id": watchlist_entry.movie_id
         }
         # Check if exists
-        existing = supabase.table("watchlist").select("id").eq("user_id", data["user_id"]).eq("movie_id", data["movie_id"]).execute()
+        existing = sb_client.table("watchlist").select("id").eq("user_id", data["user_id"]).eq("movie_id", data["movie_id"]).execute()
         if existing.data:
             return existing.data[0]
             
-        response = supabase.table("watchlist").insert(data).execute()
+        response = sb_client.table("watchlist").insert(data).execute()
         if response.data:
             return response.data[0]
         return None
@@ -56,8 +62,9 @@ def add_to_watchlist(db, watchlist_entry: schemas.WatchlistCreate):
         print(f"Error in add_to_watchlist: {e}")
         raise e
 
-def remove_from_watchlist(db, user_id: str, movie_id: int):
-    response = supabase.table("watchlist").delete().eq("user_id", user_id).eq("movie_id", movie_id).execute()
+def remove_from_watchlist(db, user_id: str, movie_id: int, token: str = None):
+    sb_client = get_authenticated_client(token) if token else supabase
+    response = sb_client.table("watchlist").delete().eq("user_id", user_id).eq("movie_id", movie_id).execute()
     return response.data
 
 def get_watchlist(db, user_id: str):
@@ -65,14 +72,15 @@ def get_watchlist(db, user_id: str):
     response = supabase.table("watchlist").select("*, movies(*)").eq("user_id", user_id).execute()
     return response.data
 
-def create_review(db, review: schemas.ReviewCreate):
+def create_review(db, review: schemas.ReviewCreate, token: str = None):
+    sb_client = get_authenticated_client(token) if token else supabase
     data = {
         "user_id": review.user_id,
         "movie_id": review.movie_id,
         "rating": review.rating,
         "comment": review.comment
     }
-    response = supabase.table("reviews").insert(data).execute()
+    response = sb_client.table("reviews").insert(data).execute()
     if response.data:
         return response.data[0]
     return None

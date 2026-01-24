@@ -5,12 +5,14 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [session, setSession] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Check active session
         const getSession = async () => {
             const { data: { session } } = await supabase.auth.getSession();
+            setSession(session);
             setUser(session?.user ?? null);
             setLoading(false);
         };
@@ -19,6 +21,7 @@ export const AuthProvider = ({ children }) => {
 
         // Listen for changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
             setUser(session?.user ?? null);
             setLoading(false);
         });
@@ -31,6 +34,7 @@ export const AuthProvider = ({ children }) => {
         signIn: (data) => supabase.auth.signInWithPassword(data),
         signOut: () => supabase.auth.signOut(),
         user,
+        session,
         loading
     };
 

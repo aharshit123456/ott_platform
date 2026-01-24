@@ -74,28 +74,26 @@ const VideoPlayer = () => {
     const togglePullList = async () => {
         if (!user) return alert("Login required!");
 
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+
         try {
             if (isInPullList) {
-                // await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${numericId || id}`, { method: 'DELETE' });
-                const { error } = await supabase
-                    .from('watchlist')
-                    .delete()
-                    .eq('user_id', user.id)
-                    .eq('movie_id', parseInt(numericId) || 1);
-
-                if (error) throw error;
+                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${numericId || id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 setIsInPullList(false);
             } else {
-                // await fetch(`${import.meta.env.VITE_API_URL}/watchlist/`, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ user_id: user.id, movie_id: parseInt(numericId) || 1 }) // Use resolved ID
-                // });
-                const { error } = await supabase
-                    .from('watchlist')
-                    .insert([{ user_id: user.id, movie_id: parseInt(numericId) || 1 }]);
-
-                if (error) throw error;
+                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ user_id: user.id, movie_id: parseInt(numericId) || 1 })
+                });
                 setIsInPullList(true);
             }
         } catch (e) {
@@ -108,36 +106,32 @@ const VideoPlayer = () => {
         if (!user) return alert("Login required!");
         if (userRating === 0) return alert("Rate it first!");
 
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+        console.log("Sending token to backend:", token ? "YES" : "NO");
+
         try {
-            // const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/`, {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({
-            //         user_id: user.id,
-            //         movie_id: parseInt(numericId) || 1, // Use resolved ID
-            //         rating: userRating,
-            //         comment: userComment
-            //     })
-            // });
-            const { data, error } = await supabase
-                .from('reviews')
-                .insert([
-                    {
-                        user_id: user.id,
-                        movie_id: parseInt(numericId) || 1,
-                        rating: userRating,
-                        comment: userComment
-                    }
-                ])
-                .select();
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    movie_id: parseInt(numericId) || 1,
+                    rating: userRating,
+                    comment: userComment
+                })
+            });
 
-            if (error) throw error;
-
-            if (data) {
-                const newReview = data[0];
+            if (res.ok) {
+                const newReview = await res.json();
                 setReviews([...reviews, newReview]);
                 setUserComment("");
                 setUserRating(0);
+            } else {
+                const errText = await res.text();
+                alert(`Backend Error: ${errText}`);
             }
         } catch (e) {
             console.error("Review failed", e);
