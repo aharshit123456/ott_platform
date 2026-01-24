@@ -68,8 +68,8 @@ def remove_from_watchlist(db, user_id: str, movie_id: int, token: str = None):
     return response.data
 
 def get_watchlist(db, user_id: str, token: str = None):
-    # Assuming foreign key relation exists in Supabase
     sb_client = get_authenticated_client(token) if token else supabase
+    # Assuming foreign key relation exists in Supabase
     response = sb_client.table("watchlist").select("*, movies(*)").eq("user_id", user_id).execute()
     return response.data
 
