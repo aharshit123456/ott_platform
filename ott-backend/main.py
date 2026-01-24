@@ -268,6 +268,10 @@ def get_watchlist(user_id: str, db = Depends(get_db), token: HTTPAuthorizationCr
 def create_review(review: schemas.ReviewCreate, db = Depends(get_db), token: HTTPAuthorizationCredentials = Depends(security)):
     return crud.create_review(db, review, token.credentials)
 
+@app.get("/reviews/user/{user_id}")
+def get_user_reviews(user_id: str, db = Depends(get_db), token: HTTPAuthorizationCredentials = Depends(security)):
+    return crud.get_user_reviews(db, user_id, token.credentials)
+
 @app.get("/reviews/{movie_identifier}", response_model=list[schemas.Review])
 def get_reviews(movie_identifier: str, db = Depends(get_db)):
     # Check if identifier is an integer

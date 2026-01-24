@@ -101,3 +101,8 @@ def get_movie_by_media_id(db, media_id: str):
     if response.data:
         return response.data[0]
     return None
+
+def get_user_reviews(db, user_id: str, token: str = None):
+    sb_client = get_authenticated_client(token) if token else supabase
+    response = sb_client.table("reviews").select("*, movies(*)").eq("user_id", user_id).execute()
+    return response.data
