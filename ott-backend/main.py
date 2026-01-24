@@ -47,6 +47,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from fastapi.responses import JSONResponse
+from fastapi.requests import Request
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    # This ensures that even 500 errors get CORS headers
+    return JSONResponse(
+        status_code=500,
+        content={"message": f"Internal Server Error: {str(exc)}"},
+        headers={
+            "Access-Control-Allow-Origin": request.headers.get("origin", "*"),
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        },
+    )
+
 # FastPix Client Setup
 FASTPIX_ACCESS_TOKEN = os.getenv("FASTPIX_ACCESS_TOKEN_ID")
 FASTPIX_SECRET_KEY = os.getenv("FASTPIX_SECRET_KEY")
