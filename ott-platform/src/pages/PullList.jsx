@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import ComicShelf from '../components/ComicShelf';
 import { useAuth } from '../context/AuthContext';
+import { supabase } from '../supabaseClient';
 
 const PullList = () => {
     const { user } = useAuth();
@@ -16,7 +17,12 @@ const PullList = () => {
 
         const fetchPullList = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`);
+                const token = (await supabase.auth.getSession()).data.session?.access_token;
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 if (!response.ok) throw new Error("Failed to fetch pull list");
 
                 const data = await response.json();

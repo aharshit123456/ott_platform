@@ -43,13 +43,18 @@ const HeroSection = ({ movies }) => {
                     left: 0,
                     width: '100%',
                     height: '100%',
-                    backgroundImage: `url(${m.thumbnail})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
                     opacity: i === currentIndex ? 0.8 : 0,
                     transition: 'opacity 1s ease-in-out',
                     zIndex: 0
-                }}></div>
+                }}>
+                    <img
+                        src={m.thumbnail}
+                        alt={m.title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        fetchpriority={i === currentIndex ? "high" : "low"}
+                        loading={i === currentIndex ? "eager" : "lazy"}
+                    />
+                </div>
             ))}
 
             {/* Comic Panel Overlay (Gradient) */}

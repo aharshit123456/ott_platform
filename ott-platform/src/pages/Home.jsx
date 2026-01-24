@@ -41,12 +41,35 @@ const Home = () => {
     return (
         <Layout>
             <ClickEffects />
-            {loading && <p>Loading comics...</p>}
-            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+            {loading && (
+                <div style={{ opacity: 0.5 }}>
+                    <div style={{
+                        height: '400px',
+                        backgroundColor: '#222',
+                        border: 'var(--comic-border)',
+                        marginBottom: '40px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <h2 style={{ color: 'white' }}>DRAWING THE COVERS...</h2>
+                    </div>
+                    {[1, 2].map(i => (
+                        <div key={i} style={{ marginBottom: '40px' }}>
+                            <div style={{ height: '30px', width: '200px', backgroundColor: '#ddd', marginBottom: '20px', border: '2px solid black' }}></div>
+                            <div style={{ display: 'flex', gap: '20px', overflow: 'hidden' }}>
+                                {[1, 2, 3, 4].map(j => (
+                                    <div key={j} style={{ width: '200px', height: '300px', backgroundColor: '#eee', border: '3px solid black' }}></div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+            {error && <p style={{ color: 'red', padding: '20px', border: '2px solid black', background: 'white' }}>Error: {error}</p>}
 
             {!loading && !error && videos.length > 0 && (
                 <>
-                    {/* Pass all videos for carousel */}
                     <HeroSection movies={videos} />
                     <ComicShelf title="Fresh from the Ink!" items={videos} />
                     <ComicShelf title="Trending Issues" items={[...videos].reverse()} />
