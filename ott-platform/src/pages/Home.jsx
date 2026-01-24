@@ -29,7 +29,7 @@ const Home = () => {
                 setVideos(formattedVideos);
             } catch (err) {
                 console.error("Error fetching movies:", err);
-                setError(err.message);
+                setError(`Failed to fetch from ${import.meta.env.VITE_API_URL}: ${err.message}`);
             } finally {
                 setLoading(false);
             }

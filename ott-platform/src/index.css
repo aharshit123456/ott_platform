@@ -113,3 +113,23 @@ button:active {
 .comic-card:hover .speech-bubble {
   display: block !important;
 }
+
+/* Navigation Visibility */
+.bottom-nav {
+  display: none !important; /* Hidden by default on desktop */
+}
+
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .bottom-nav {
+    display: flex !important;
+  }
+  
+  /* Adjust main container to clear the bottom nav */
+  .comic-container {
+      padding-bottom: 70px;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import BottomNav from './BottomNav';
 
 const Layout = ({ children }) => {
     const { user, loading, signOut } = useAuth();
@@ -65,7 +66,7 @@ const Layout = ({ children }) => {
                         WHAM! OTT
                     </h1>
                 </Link>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                <div className="desktop-nav" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                     {user ? (
                         <>
                             <Link to="/pull-list" style={{
@@ -128,6 +129,8 @@ const Layout = ({ children }) => {
                     )}
                 </div>
             </header>
+
+            <BottomNav />
 
             <main className="comic-container" style={{ minHeight: '80vh' }}>
                 {children}
