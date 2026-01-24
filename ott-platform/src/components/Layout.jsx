@@ -144,7 +144,7 @@ const Layout = ({ children }) => {
                 marginTop: '2rem',
                 fontFamily: 'var(--font-heading)'
             }}>
-                <p>&copy; 2026 SUPER STREAMING SQUAD</p>
+                <p>&copy; 2026 CosQ Entertainments Pvt. Ltd.</p>
             </footer>
         </div>
     );
