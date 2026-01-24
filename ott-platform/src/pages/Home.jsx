@@ -6,6 +6,8 @@ import ClickEffects from '../components/ClickEffects';
 
 const Home = () => {
     const [videos, setVideos] = useState([]);
+    const [trendingMovies, setTrendingMovies] = useState([]);
+    const [continueWatching, setContinueWatching] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -20,13 +22,43 @@ const Home = () => {
 
                 // Map backend keys to frontend expected keys
                 const formattedVideos = data.map(movie => ({
-                    id: movie.fastpix_playback_id || movie.id, // Use playback ID if available, else DB ID (fallback)
+                    id: movie.fastpix_playback_id || movie.id,
+                    dbId: movie.id,
+                    tmdbId: movie.tmdb_id,
                     title: movie.title,
                     description: movie.description,
-                    thumbnail: movie.thumbnail_url || 'https://picsum.photos/400/225' // Fallback thumbnail
+                    thumbnail: movie.thumbnail_url || 'https://picsum.photos/400/225'
                 }));
 
                 setVideos(formattedVideos);
+
+                // 2. Fetch Trending from TMDB if API key exists
+                const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
+                if (tmdbKey) {
+                    const tmdbRes = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${tmdbKey}`);
+                    if (tmdbRes.ok) {
+                        const tmdbData = await tmdbRes.json();
+                        const formattedTrending = tmdbData.results.map(m => ({
+                            id: m.id.toString(),
+                            title: m.title,
+                            description: m.overview,
+                            thumbnail: `https://image.tmdb.org/t/p/w500${m.poster_path}`
+                        }));
+                        setTrendingMovies(formattedTrending);
+                    }
+                }
+
+                // 3. Load Continue Watching from LocalStorage
+                const progress = JSON.parse(localStorage.getItem('vidRockProgress') || '[]');
+                if (progress.length > 0) {
+                    const formattedProgress = progress.map(p => ({
+                        id: p.id.toString(),
+                        title: p.title,
+                        thumbnail: p.poster_path.startsWith('http') ? p.poster_path : `https://image.tmdb.org/t/p/w500${p.poster_path}`,
+                        description: `Watched: ${Math.round((p.progress.watched / p.progress.duration) * 100)}%`
+                    }));
+                    setContinueWatching(formattedProgress);
+                }
             } catch (err) {
                 console.error("Error fetching movies:", err);
                 setError(`Failed to fetch from ${import.meta.env.VITE_API_URL}: ${err.message}`);
@@ -68,15 +100,28 @@ const Home = () => {
             )}
             {error && <p style={{ color: 'red', padding: '20px', border: '2px solid black', background: 'white' }}>Error: {error}</p>}
 
-            {!loading && !error && videos.length > 0 && (
+            {!loading && !error && (
                 <>
-                    <HeroSection movies={videos} />
-                    <ComicShelf title="Fresh from the Ink!" items={videos} />
-                    <ComicShelf title="Trending Issues" items={[...videos].reverse()} />
+                    {videos.length > 0 && <HeroSection movies={videos} />}
+
+                    {continueWatching.length > 0 && (
+                        <ComicShelf title="Back into Action!" items={continueWatching} />
+                    )}
+
+                    {trendingMovies.length > 0 && (
+                        <ComicShelf title="TMDB Trending Right Now" items={trendingMovies} />
+                    )}
+
+                    {videos.length > 0 && (
+                        <>
+                            <ComicShelf title="Fresh from the Ink!" items={videos} />
+                            <ComicShelf title="Trending Issues" items={[...videos].reverse()} />
+                        </>
+                    )}
                 </>
             )}
 
-            {!loading && !error && videos.length === 0 && (
+            {!loading && !error && videos.length === 0 && trendingMovies.length === 0 && (
                 <p>No comics found in the archives!</p>
             )}
         </Layout>

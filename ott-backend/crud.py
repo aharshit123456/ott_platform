@@ -13,7 +13,9 @@ def create_movie(db, movie: schemas.MovieCreate, fastpix_media_id: str = None, f
         "thumbnail_url": movie.thumbnail_url,
         "is_published": movie.is_published,
         "fastpix_media_id": fastpix_media_id,
-        "fastpix_playback_id": fastpix_playback_id
+        "fastpix_playback_id": fastpix_playback_id,
+        "tmdb_id": movie.tmdb_id,
+        "media_type": movie.media_type
     }
     response = supabase.table("movies").insert(data).execute()
     # supabase-py v2 returns a response object with .data

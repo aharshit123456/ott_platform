@@ -5,6 +5,8 @@ class MovieBase(BaseModel):
     title: str
     description: Optional[str] = None
     thumbnail_url: Optional[str] = None
+    tmdb_id: Optional[int] = None
+    media_type: Optional[str] = "movie"
     is_published: bool = False
 
 class MovieCreate(MovieBase):
@@ -14,6 +16,7 @@ class Movie(MovieBase):
     id: int
     fastpix_media_id: Optional[str] = None
     fastpix_playback_id: Optional[str] = None
+
 
     class Config:
         from_attributes = True

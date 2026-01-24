@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import FastPixPlayer from '../components/FastPixPlayer';
+import VidRockPlayer from '../components/VidRockPlayer';
 import { useAuth } from '../context/AuthContext';
 import ClickEffects from '../components/ClickEffects';
 import { supabase } from '../supabaseClient';
@@ -11,84 +12,113 @@ const VideoPlayer = () => {
     const { user } = useAuth();
 
     // State
+    const [movie, setMovie] = useState(null);
     const [isInPullList, setIsInPullList] = useState(false);
     const [reviews, setReviews] = useState([]);
     const [userRating, setUserRating] = useState(0);
     const [userComment, setUserComment] = useState("");
-    const [loadingReviews, setLoadingReviews] = useState(true);
-    const [numericId, setNumericId] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [useVidRock, setUseVidRock] = useState(false);
 
-    // Mock ID logic from before
+    // Resolved playbackId for FastPix
     const playbackId = id.includes('demo')
         ? 'd983edb7-c672-4474-8e41-adc8d4d83b05'
         : id;
 
-    // Fetch initial data
     useEffect(() => {
-        const checkPullList = async () => {
-            if (!user) return;
+        const fetchAllData = async () => {
+            setLoading(true);
             try {
-                // 1. Resolve playback ID to integer Movie ID
-                let resolvedId = id;
-                if (id.length > 10) { // Naive check for UUID vs Int
-                    const movieRes = await fetch(`${import.meta.env.VITE_API_URL}/movies/`);
-                    if (movieRes.ok) {
-                        const allMovies = await movieRes.json();
-                        const match = allMovies.find(m => m.fastpix_playback_id === id);
-                        if (match) resolvedId = match.id.toString();
+                // 1. Fetch Movie Details
+                // We'll try to find the movie by playbackId OR numeric ID
+                const movieRes = await fetch(`${import.meta.env.VITE_API_URL}/movies/`);
+                if (movieRes.ok) {
+                    const allMovies = await movieRes.json();
+                    const foundMovie = allMovies.find(m =>
+                        m.id.toString() === id ||
+                        m.fastpix_playback_id === id ||
+                        (id.includes('demo') && m.title?.toLowerCase().includes('demo'))
+                    );
+
+                    if (foundMovie) {
+                        setMovie(foundMovie);
+                        // If movie has tmdb_id, default to VidRock if requested or if no FastPix
+                        if (foundMovie.tmdb_id) {
+                            setUseVidRock(true);
+                        }
+                    } else {
+                        // If not found in DB, check if the ID itself is a TMDB ID (all numeric)
+                        if (/^\d+$/.test(id)) {
+                            console.log("No DB entry found, but ID appears to be a TMDB ID. Defaulting to VidRock.");
+                            setMovie({
+                                title: "External Title", // We don't have the title from DB
+                                tmdb_id: parseInt(id),
+                                media_type: 'movie' // Defaulting to movie
+                            });
+                            setUseVidRock(true);
+                        }
                     }
                 }
-                setNumericId(resolvedId);
 
-                const token = (await supabase.auth.getSession()).data.session?.access_token;
-
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
+                // 2. Fetch Watchlist status
+                if (user) {
+                    const token = (await supabase.auth.getSession()).data.session?.access_token;
+                    const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        // Check if movie.id is in watchlist
+                        // Note: we need movie.id which we just fetched
                     }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    const found = data.find(item => item.movie_id.toString() === resolvedId);
-                    setIsInPullList(!!found);
                 }
-            } catch (e) { console.error(e); }
-        };
 
-        const fetchReviews = async () => {
-            // We need numeric ID for reviews if DB schema uses integer movie_id.
-            // If URL param is playback_id, this fails.
-            // We'll proceed assuming we can fetch by whatever ID we have or backend handles lookup.
-            // Backend get_reviews expects movie_id (int).
-            // If ID is string (fastpix ID), this endpoint needs update or we need to lookup ID first.
-            // SKIP complex lookup for this demo and assume 'id' is OK.
-            try {
-                // Just mocking empty array if fetch fails due to ID type mismatch
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/${id}`); // Potentially fail if id is not int
-                if (res.ok) {
-                    const data = await res.json();
+                // 3. Fetch Reviews
+                // We need the numeric ID for reviews
+                const targetId = movie?.id || id;
+                const reviewsRes = await fetch(`${import.meta.env.VITE_API_URL}/reviews/${targetId}`);
+                if (reviewsRes.ok) {
+                    const data = await reviewsRes.json();
                     setReviews(data);
                 }
-            } catch (e) { console.error(e); }
-            setLoadingReviews(false);
+
+            } catch (e) {
+                console.error("Failed to fetch video data", e);
+            } finally {
+                setLoading(false);
+            }
         };
 
-        checkPullList();
-        fetchReviews();
+        fetchAllData();
     }, [id, user]);
 
+    // Update watchlist status once movie is loaded
+    useEffect(() => {
+        if (!movie || !user) return;
+        const checkWatchlist = async () => {
+            const token = (await supabase.auth.getSession()).data.session?.access_token;
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                const found = data.find(item => item.movie_id === movie.id);
+                setIsInPullList(!!found);
+            }
+        };
+        checkWatchlist();
+    }, [movie, user]);
+
     const togglePullList = async () => {
-        if (!user) return alert("Login required!");
+        if (!user || !movie) return alert("Login required!");
 
         const token = (await supabase.auth.getSession()).data.session?.access_token;
 
         try {
             if (isInPullList) {
-                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${numericId || id}`, {
+                await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}/${movie.id}`, {
                     method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
                 setIsInPullList(false);
             } else {
@@ -98,7 +128,7 @@ const VideoPlayer = () => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ user_id: user.id, movie_id: parseInt(numericId) || 1 })
+                    body: JSON.stringify({ user_id: user.id, movie_id: movie.id })
                 });
                 setIsInPullList(true);
             }
@@ -109,11 +139,10 @@ const VideoPlayer = () => {
     };
 
     const submitReview = async () => {
-        if (!user) return alert("Login required!");
+        if (!user || !movie) return alert("Login required!");
         if (userRating === 0) return alert("Rate it first!");
 
         const token = (await supabase.auth.getSession()).data.session?.access_token;
-        console.log("Sending token to backend:", token ? "YES" : "NO");
 
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews/`, {
@@ -124,7 +153,7 @@ const VideoPlayer = () => {
                 },
                 body: JSON.stringify({
                     user_id: user.id,
-                    movie_id: parseInt(numericId) || 1,
+                    movie_id: movie.id,
                     rating: userRating,
                     comment: userComment
                 })
@@ -144,6 +173,8 @@ const VideoPlayer = () => {
             alert(`Review error: ${e.message}`);
         }
     };
+
+    if (loading) return <Layout><div className="comic-container"><h2>CHARGING CAPACITORS...</h2></div></Layout>;
 
     return (
         <Layout>
@@ -173,24 +204,45 @@ const VideoPlayer = () => {
                         transform: 'skew(-10deg)',
                         margin: 0
                     }}>
-                        NOW PLAYING
+                        {movie ? movie.title : "NOW PLAYING"}
                     </h2>
 
-                    <button onClick={togglePullList} style={{
-                        backgroundColor: isInPullList ? '#ccc' : 'var(--comic-primary)',
-                        color: isInPullList ? '#666' : 'white',
-                        border: 'var(--comic-border)',
-                        padding: '10px 20px',
-                        cursor: 'pointer',
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: '1.2rem'
-                    }}>
-                        {isInPullList ? "- REMOVE FROM PULL LIST" : "+ ADD TO PULL LIST"}
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        {movie?.tmdb_id && movie?.fastpix_playback_id && (
+                            <button
+                                onClick={() => setUseVidRock(!useVidRock)}
+                                style={{
+                                    backgroundColor: 'black',
+                                    color: 'white',
+                                    border: 'var(--comic-border)',
+                                    padding: '5px 10px',
+                                    cursor: 'pointer',
+                                    fontFamily: 'var(--font-heading)'
+                                }}
+                            >
+                                SWITCH TO {useVidRock ? 'FASTPIX' : 'VIDROCK'}
+                            </button>
+                        )}
+                        <button onClick={togglePullList} style={{
+                            backgroundColor: isInPullList ? '#ccc' : 'var(--comic-primary)',
+                            color: isInPullList ? '#666' : 'white',
+                            border: 'var(--comic-border)',
+                            padding: '10px 20px',
+                            cursor: 'pointer',
+                            fontFamily: 'var(--font-heading)',
+                            fontSize: '1.2rem'
+                        }}>
+                            {isInPullList ? "- REMOVE FROM PULL LIST" : "+ ADD TO PULL LIST"}
+                        </button>
+                    </div>
                 </div>
 
-                <div style={{ border: 'var(--comic-border)', padding: '5px', backgroundColor: 'black' }}>
-                    <FastPixPlayer playbackId={playbackId} />
+                <div className="player-wrapper">
+                    {useVidRock && movie?.tmdb_id ? (
+                        <VidRockPlayer tmdbId={movie.tmdb_id} type={movie.media_type || 'movie'} />
+                    ) : (
+                        <FastPixPlayer playbackId={playbackId} />
+                    )}
                 </div>
 
                 <div className="video-details" style={{
@@ -200,7 +252,10 @@ const VideoPlayer = () => {
                     marginTop: '20px',
                     boxShadow: 'var(--comic-shadow)'
                 }}>
-                    <h3>ISSUE DETAILS: #{id}</h3>
+                    <h3>ISSUE DETAILS: {movie ? movie.title : `#${id}`}</h3>
+                    <p style={{ fontStyle: 'italic', marginBottom: '20px' }}>
+                        {movie?.description || "No description available for this issue."}
+                    </p>
 
                     {/* Rating Section */}
                     <div style={{ marginTop: '20px', borderTop: '2px dashed black', paddingTop: '20px' }}>
@@ -248,3 +303,4 @@ const VideoPlayer = () => {
 };
 
 export default VideoPlayer;
+

@@ -10,4 +10,6 @@ class Movie(Base):
     thumbnail_url = Column(String, nullable=True)
     fastpix_media_id = Column(String, nullable=True)
     fastpix_playback_id = Column(String, nullable=True)
+    tmdb_id = Column(Integer, nullable=True)
+    media_type = Column(String, default="movie")
     is_published = Column(Boolean, default=False)
