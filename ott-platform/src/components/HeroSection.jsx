@@ -51,7 +51,7 @@ const HeroSection = ({ movies }) => {
                         src={m.thumbnail}
                         alt={m.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        fetchpriority={i === currentIndex ? "high" : "low"}
+                        fetchPriority={i === currentIndex ? "high" : "low"}
                         loading={i === currentIndex ? "eager" : "lazy"}
                     />
                 </div>
