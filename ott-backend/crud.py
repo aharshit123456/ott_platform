@@ -38,19 +38,23 @@ def update_movie(db, movie_id: int, updates: dict):
     return None
 
 def add_to_watchlist(db, watchlist_entry: schemas.WatchlistCreate):
-    data = {
-        "user_id": watchlist_entry.user_id,
-        "movie_id": watchlist_entry.movie_id
-    }
-    # Check if exists
-    existing = supabase.table("watchlist").select("id").eq("user_id", data["user_id"]).eq("movie_id", data["movie_id"]).execute()
-    if existing.data:
-        return existing.data[0]
-        
-    response = supabase.table("watchlist").insert(data).execute()
-    if response.data:
-        return response.data[0]
-    return None
+    try:
+        data = {
+            "user_id": watchlist_entry.user_id,
+            "movie_id": watchlist_entry.movie_id
+        }
+        # Check if exists
+        existing = supabase.table("watchlist").select("id").eq("user_id", data["user_id"]).eq("movie_id", data["movie_id"]).execute()
+        if existing.data:
+            return existing.data[0]
+            
+        response = supabase.table("watchlist").insert(data).execute()
+        if response.data:
+            return response.data[0]
+        return None
+    except Exception as e:
+        print(f"Error in add_to_watchlist: {e}")
+        raise e
 
 def remove_from_watchlist(db, user_id: str, movie_id: int):
     response = supabase.table("watchlist").delete().eq("user_id", user_id).eq("movie_id", movie_id).execute()

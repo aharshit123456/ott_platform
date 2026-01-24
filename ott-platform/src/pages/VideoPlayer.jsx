@@ -26,19 +26,21 @@ const VideoPlayer = () => {
         const checkPullList = async () => {
             if (!user) return;
             try {
-                // Determine if in watchlist. Since API returns full list, we check there or implement specific check endpoint.
-                // For efficiency, we should have a check endpoint, but we'll fetch list for now or try to add and see if it returns "already exists" logic if modeled that way.
-                // Actually, let's fetch list.
+                // 1. Resolve playback ID to integer Movie ID
+                let numericId = id;
+                if (id.length > 10) { // Naive check for UUID vs Int
+                    const movieRes = await fetch(`${import.meta.env.VITE_API_URL}/movies/`);
+                    if (movieRes.ok) {
+                        const allMovies = await movieRes.json();
+                        const match = allMovies.find(m => m.fastpix_playback_id === id);
+                        if (match) numericId = match.id.toString();
+                    }
+                }
+
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/watchlist/${user.id}`);
                 if (res.ok) {
                     const data = await res.json();
-                    // data items have movie_id (int) or maybe joined movie object. 
-                    // Our frontend uses string IDs often (playback_id). 
-                    // This is a mismatch risk. We need to be consistent with DB IDs vs Playback IDs.
-                    // For now, assuming 'id' param IS the DB ID or traceable. 
-                    // If 'id' is playback ID, we can't easily match without looking up DB ID.
-                    // Let's assume 'id' passed in URL matches what's stored in relation.
-                    const found = data.find(item => item.movie_id.toString() === id || item.movies?.fastpix_playback_id === id);
+                    const found = data.find(item => item.movie_id.toString() === numericId);
                     setIsInPullList(!!found);
                 }
             } catch (e) { console.error(e); }

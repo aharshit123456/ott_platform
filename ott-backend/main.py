@@ -76,6 +76,13 @@ def read_movies(skip: int = 0, limit: int = 100, db = Depends(get_db)):
     movies = crud.get_movies(db, skip=skip, limit=limit)
     return movies
 
+@app.get("/movies/{movie_id}", response_model=schemas.Movie)
+def read_movie(movie_id: int, db = Depends(get_db)):
+    movie = crud.get_movie(db, movie_id)
+    if movie is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return movie
+
 @app.post("/upload-local-video/")
 def upload_local_video(file_path: str, title: str, description: str = None, thumbnail_url: str = None, db = Depends(get_db)):
     print(f"DEBUG: upload_local_video called with path={file_path}, title={title}")
