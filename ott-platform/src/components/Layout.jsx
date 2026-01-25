@@ -117,16 +117,22 @@ const Layout = ({ children }) => {
                             >
                                 MY PULL LIST
                             </Link>
-                            <div className="user-badge" style={{
+                            <Link to="/profile" className="user-badge" style={{
                                 backgroundColor: 'var(--comic-surface)',
                                 border: 'var(--comic-border)',
                                 padding: '5px 10px',
                                 fontWeight: 'bold',
                                 transform: 'rotate(-2deg)',
-                                color: 'var(--comic-text)'
-                            }}>
+                                color: 'var(--comic-text)',
+                                textDecoration: 'none',
+                                cursor: 'pointer',
+                                transition: 'transform 0.2s'
+                            }}
+                                onMouseEnter={(e) => e.currentTarget.style.transform = 'rotate(-2deg) scale(1.05)'}
+                                onMouseLeave={(e) => e.currentTarget.style.transform = 'rotate(-2deg)'}
+                            >
                                 {user.user_metadata?.username || user.email.split('@')[0].toUpperCase()}
-                            </div>
+                            </Link>
                             <button onClick={signOut} style={{
                                 background: 'var(--comic-text)',
                                 color: 'var(--comic-bg)',
