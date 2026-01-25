@@ -5,23 +5,27 @@
   --comic-secondary: #ffd700;
   --comic-accent: #33ccff;
   --comic-bg: #f0f0f0;
+  --comic-surface: #ffffff;
   --comic-text: #1a1a1a;
-  --comic-border: 3px solid #000000;
+  --comic-border: 4px solid #000000;
   --comic-shadow: 4px 4px 0px 0px #000000;
   --font-heading: 'Bangers', cursive;
   --font-body: 'Comic Neue', cursive;
 }
 
 body.noir-mode {
-  --comic-bg: #1a1a1a;
-  --comic-text: #f0f0f0;
-  --comic-primary: #ff0000;
-  /* Sin City Red */
-  --comic-secondary: #ffffff;
-  --comic-accent: #808080;
-  --comic-border: 3px solid #ffffff;
-  --comic-shadow: 4px 4px 0px 0px #ffffff;
-  background-image: radial-gradient(#333 15%, transparent 16%);
+  --comic-bg: #0f0f0f;
+  --comic-surface: #1a1a1a;
+  --comic-text: #cccccc;
+  --comic-primary: #990000;
+  /* Muted Blood Red */
+  --comic-secondary: #2a2a2a;
+  --comic-accent: #444444;
+  --comic-border: 4px solid #222222;
+  /* Darker border instead of white */
+  --comic-shadow: 4px 4px 0px 0px #000000;
+  /* Flat black shadow */
+  background-image: radial-gradient(#1a1a1a 15%, transparent 16%);
 }
 
 @keyframes bam-pop {
@@ -116,20 +120,21 @@ button:active {
 
 /* Navigation Visibility */
 .bottom-nav {
-  display: none !important; /* Hidden by default on desktop */
+  display: none !important;
+  /* Hidden by default on desktop */
 }
 
 @media (max-width: 768px) {
   .desktop-nav {
     display: none !important;
   }
-  
+
   .bottom-nav {
     display: flex !important;
   }
-  
+
   /* Adjust main container to clear the bottom nav */
   .comic-container {
-      padding-bottom: 70px;
+    padding-bottom: 70px;
   }
 }

@@ -7,9 +7,29 @@ import { useAuth } from '../context/AuthContext';
 import ClickEffects from '../components/ClickEffects';
 import { supabase } from '../supabaseClient';
 
+import GiscusComments from '../components/GiscusComments';
+
 const VideoPlayer = () => {
     const { id } = useParams();
     const { user } = useAuth();
+
+    // Theme detection for Giscus
+    const [isDark, setIsDark] = useState(localStorage.getItem('noir-mode') === 'true');
+
+    useEffect(() => {
+        // Listen for theme changes if needed, but for now simple check is fine
+        // since Giscus component also re-renders on prop change
+        const checkTheme = () => {
+            setIsDark(localStorage.getItem('noir-mode') === 'true');
+        };
+        window.addEventListener('storage', checkTheme);
+        // Also poll slightly because localStorage events don't fire in the same tab
+        const interval = setInterval(checkTheme, 1000);
+        return () => {
+            window.removeEventListener('storage', checkTheme);
+            clearInterval(interval);
+        };
+    }, []);
 
     // State
     const [movie, setMovie] = useState(null);
@@ -182,13 +202,13 @@ const VideoPlayer = () => {
             <div style={{ marginBottom: '20px' }}>
                 <Link to="/" style={{
                     display: 'inline-block',
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--comic-surface)',
                     border: 'var(--comic-border)',
                     padding: '5px 15px',
                     textDecoration: 'none',
-                    color: 'black',
+                    color: 'var(--comic-text)',
                     fontWeight: 'bold',
-                    boxShadow: '3px 3px 0 black'
+                    boxShadow: 'var(--comic-shadow)'
                 }}>
                     &larr; BACK TO RACK
                 </Link>
@@ -212,8 +232,8 @@ const VideoPlayer = () => {
                             <button
                                 onClick={() => setUseVidRock(!useVidRock)}
                                 style={{
-                                    backgroundColor: 'black',
-                                    color: 'white',
+                                    backgroundColor: 'var(--comic-text)',
+                                    color: 'var(--comic-bg)',
                                     border: 'var(--comic-border)',
                                     padding: '5px 10px',
                                     cursor: 'pointer',
@@ -246,11 +266,12 @@ const VideoPlayer = () => {
                 </div>
 
                 <div className="video-details" style={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'var(--comic-surface)',
                     border: 'var(--comic-border)',
                     padding: '20px',
                     marginTop: '20px',
-                    boxShadow: 'var(--comic-shadow)'
+                    boxShadow: 'var(--comic-shadow)',
+                    color: 'var(--comic-text)'
                 }}>
                     <h3>ISSUE DETAILS: {movie ? movie.title : `#${id}`}</h3>
                     <p style={{ fontStyle: 'italic', marginBottom: '20px' }}>
@@ -258,7 +279,7 @@ const VideoPlayer = () => {
                     </p>
 
                     {/* Rating Section */}
-                    <div style={{ marginTop: '20px', borderTop: '2px dashed black', paddingTop: '20px' }}>
+                    <div style={{ marginTop: '20px', borderTop: '2px dashed var(--comic-text)', paddingTop: '20px' }}>
                         <h4>RATE THIS ISSUE:</h4>
                         <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
                             {[1, 2, 3, 4, 5].map(star => (
@@ -279,7 +300,15 @@ const VideoPlayer = () => {
                             value={userComment}
                             onChange={(e) => setUserComment(e.target.value)}
                             placeholder="Write your review here, true believer..."
-                            style={{ width: '100%', minHeight: '80px', fontFamily: 'var(--font-body)', padding: '10px', border: '2px solid black' }}
+                            style={{
+                                width: '100%',
+                                minHeight: '80px',
+                                fontFamily: 'var(--font-body)',
+                                padding: '10px',
+                                border: '2px solid var(--comic-text)',
+                                backgroundColor: 'var(--comic-bg)',
+                                color: 'var(--comic-text)'
+                            }}
                         />
                         <button onClick={submitReview} style={{ marginTop: '10px' }}>POST REVIEW</button>
                     </div>
@@ -289,13 +318,16 @@ const VideoPlayer = () => {
                         <h4>FAN MAIL ({reviews.length})</h4>
                         {reviews.length === 0 && <p>Be the first to write in!</p>}
                         {reviews.map((rev, i) => (
-                            <div key={i} style={{ borderBottom: '1px solid black', padding: '10px 0' }}>
+                            <div key={i} style={{ borderBottom: '1px solid var(--comic-text)', padding: '10px 0' }}>
                                 <div>{"★".repeat(rev.rating)}</div>
                                 <p>{rev.comment}</p>
                                 <small style={{ color: '#666' }}>- Fan #{rev.user_id ? rev.user_id.substring(0, 8) : 'Anon'}</small>
                             </div>
                         ))}
                     </div>
+
+                    {/* Giscus External Comments */}
+                    <GiscusComments theme={isDark ? 'dark' : 'light'} />
                 </div>
             </div>
         </Layout>

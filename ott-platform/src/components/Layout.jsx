@@ -6,14 +6,28 @@ import BottomNav from './BottomNav';
 const Layout = ({ children }) => {
     const { user, loading, signOut } = useAuth();
     const [showSplash, setShowSplash] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(() => {
+        const saved = localStorage.getItem('noir-mode');
+        return saved === 'true';
+    });
 
     useEffect(() => {
         if (!loading) {
-            // Keep splash screen for a bit to show off logic/branding
             const timer = setTimeout(() => setShowSplash(false), 2000);
             return () => clearTimeout(timer);
         }
     }, [loading]);
+
+    useEffect(() => {
+        if (isDarkMode) {
+            document.body.classList.add('noir-mode');
+        } else {
+            document.body.classList.remove('noir-mode');
+        }
+        localStorage.setItem('noir-mode', isDarkMode);
+    }, [isDarkMode]);
+
+    const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
     if (showSplash || loading) {
         return (
@@ -31,8 +45,7 @@ const Layout = ({ children }) => {
             }}>
                 <h1 style={{
                     fontSize: '4rem',
-                    color: 'black',
-                    textShadow: '4px 4px white',
+                    color: 'var(--comic-text)',
                     fontFamily: "'Bangers', cursive",
                     animation: 'bounce 1s infinite'
                 }}>
@@ -61,40 +74,54 @@ const Layout = ({ children }) => {
                 top: 0,
                 zIndex: 100
             }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-                    <h1 style={{ margin: 0, fontSize: '2rem', textShadow: '2px 2px white' }}>
+                <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)' }}>
+                    <h1 style={{ margin: 0, fontSize: '2rem' }}>
                         WHAM! OTT
                     </h1>
                 </Link>
                 <div className="desktop-nav" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <button
+                        onClick={toggleDarkMode}
+                        style={{
+                            padding: '5px 10px',
+                            fontSize: '1rem',
+                            marginRight: '10px',
+                            backgroundColor: isDarkMode ? 'white' : 'black',
+                            color: isDarkMode ? 'black' : 'white',
+                            border: '2px solid black'
+                        }}
+                    >
+                        {isDarkMode ? '☀️ LIGHT' : '🌙 NOIR'}
+                    </button>
                     {user ? (
                         <>
                             <Link to="/pull-list" style={{
                                 marginRight: '15px',
                                 textDecoration: 'none',
-                                color: 'black',
+                                color: 'var(--comic-text)',
                                 fontWeight: 'bold',
                                 fontSize: '1.2rem',
                                 fontFamily: 'var(--font-heading)',
                                 borderBottom: '2px solid transparent'
                             }}
-                                onMouseEnter={(e) => e.target.style.borderBottom = '2px solid black'}
+                                onMouseEnter={(e) => e.target.style.borderBottom = '2px solid var(--comic-text)'}
                                 onMouseLeave={(e) => e.target.style.borderBottom = '2px solid transparent'}
                             >
                                 MY PULL LIST
                             </Link>
                             <div className="user-badge" style={{
-                                backgroundColor: 'white',
+                                backgroundColor: 'var(--comic-surface)',
                                 border: 'var(--comic-border)',
                                 padding: '5px 10px',
                                 fontWeight: 'bold',
-                                transform: 'rotate(-2deg)'
+                                transform: 'rotate(-2deg)',
+                                color: 'var(--comic-text)'
                             }}>
                                 {user.user_metadata?.username || user.email.split('@')[0].toUpperCase()}
                             </div>
                             <button onClick={signOut} style={{
-                                background: 'black',
-                                color: 'white',
+                                background: 'var(--comic-text)',
+                                color: 'var(--comic-bg)',
                                 border: 'none',
                                 padding: '5px 10px',
                                 cursor: 'pointer',
@@ -107,11 +134,11 @@ const Layout = ({ children }) => {
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <Link to="/login" style={{
                                 textDecoration: 'none',
-                                color: 'black',
+                                color: 'var(--comic-text)',
                                 fontWeight: 'bold',
-                                backgroundColor: 'white',
+                                backgroundColor: 'var(--comic-surface)',
                                 padding: '5px 10px',
-                                border: '2px solid black'
+                                border: '2px solid var(--comic-text)'
                             }}>
                                 LOGIN
                             </Link>

@@ -64,7 +64,7 @@ const HeroSection = ({ movies }) => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(to top, black 20%, transparent 80%)',
+                background: 'linear-gradient(to top, var(--comic-bg) 20%, transparent 80%)',
                 zIndex: 1
             }}></div>
 
@@ -74,12 +74,12 @@ const HeroSection = ({ movies }) => {
                 top: '20px',
                 left: '20px',
                 backgroundColor: 'var(--comic-secondary)',
-                color: 'black',
+                color: 'var(--comic-text)',
                 fontWeight: 'bold',
                 padding: '5px 10px',
-                border: '2px solid black',
+                border: 'var(--comic-border)',
                 transform: 'rotate(-2deg)',
-                boxShadow: '3px 3px 0 black',
+                boxShadow: 'var(--comic-shadow)',
                 zIndex: 2
             }}>
                 PAGE 1 | PANEL {currentIndex + 1}
@@ -106,14 +106,13 @@ const HeroSection = ({ movies }) => {
                     padding: '20px',
                     border: 'var(--comic-border)',
                     maxWidth: '600px',
-                    boxShadow: '5px 5px 0 black',
+                    boxShadow: 'var(--comic-shadow)',
                     marginBottom: '20px',
-                    transition: 'all 0.5s' // Smooth transition for text box if needed
+                    transition: 'all 0.5s'
                 }}>
                     <h2 style={{
                         fontSize: '3rem',
-                        marginBottom: '10px',
-                        textShadow: '2px 2px 0 var(--comic-secondary)'
+                        marginBottom: '10px'
                     }}>
                         {movie.title}
                     </h2>
@@ -128,7 +127,8 @@ const HeroSection = ({ movies }) => {
                         <button style={{
                             fontSize: '1.5rem',
                             backgroundColor: 'var(--comic-primary)',
-                            color: 'white'
+                            color: 'var(--comic-bg)',
+                            border: 'var(--comic-border)'
                         }}>
                             WATCH NOW!
                         </button>

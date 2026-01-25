@@ -3,22 +3,16 @@ import { Link } from 'react-router-dom';
 
 const ComicShelf = ({ title, items }) => {
     const scrollRef = useRef(null);
-    // Triple items to create buffer for infinite loop
     const [displayItems, setDisplayItems] = useState([]);
 
     useEffect(() => {
         if (items && items.length > 0) {
-            // Create 3 sets for smooth infinite scroll
             setDisplayItems([...items, ...items, ...items]);
         }
     }, [items]);
 
-    // Initialize scroll to middle set
     useEffect(() => {
         if (scrollRef.current && items && items.length > 0) {
-            // Rough calculation: scroll to 1/3 width
-            // Assuming card width + gap approx 240px (220 width + 20 gap)
-            // We give it a small timeout to let render happen
             setTimeout(() => {
                 if (scrollRef.current) {
                     const singleSetWidth = items.length * 240;
@@ -26,23 +20,17 @@ const ComicShelf = ({ title, items }) => {
                 }
             }, 100);
         }
-    }, [items]); // Rely on items change, not displayItems to avoid loops
+    }, [items]);
 
     const handleScroll = () => {
         if (!scrollRef.current || !items || items.length === 0) return;
-
-        const { scrollLeft, scrollWidth } = scrollRef.current;
-        const singleSetWidth = items.length * 240; // Approx width of one set
-
-        // Safety check if width is 0
+        const { scrollLeft } = scrollRef.current;
+        const singleSetWidth = items.length * 240;
         if (singleSetWidth === 0) return;
 
-        // If scrolled to near start (first set), jump to middle set (start of 2nd set)
         if (scrollLeft < 50) {
             scrollRef.current.scrollLeft = singleSetWidth + scrollLeft;
-        }
-        // If scrolled to near end (into 3rd set), jump to middle set
-        else if (scrollLeft >= singleSetWidth * 2) {
+        } else if (scrollLeft >= singleSetWidth * 2) {
             scrollRef.current.scrollLeft = scrollLeft - singleSetWidth;
         }
     };
@@ -58,10 +46,9 @@ const ComicShelf = ({ title, items }) => {
 
     return (
         <div className="comic-shelf" style={{ marginBottom: '40px', position: 'relative' }}>
-            {/* Shelf Header */}
             <div style={{
                 backgroundColor: 'var(--comic-secondary)',
-                color: 'black',
+                color: 'var(--comic-text)',
                 display: 'inline-block',
                 padding: '5px 20px',
                 border: 'var(--comic-border)',
@@ -73,13 +60,11 @@ const ComicShelf = ({ title, items }) => {
                 <h3 style={{ margin: 0, fontSize: '1.5rem', fontFamily: 'var(--font-heading)' }}>{title}</h3>
             </div>
 
-            {/* Navigation Buttons */}
             <div style={{ position: 'absolute', right: '20px', top: '0', zIndex: 5 }}>
                 <button onClick={() => scroll('left')} style={{ marginRight: '5px', padding: '5px 10px' }}>&lt;</button>
                 <button onClick={() => scroll('right')} style={{ padding: '5px 10px' }}>&gt;</button>
             </div>
 
-            {/* Scroll Container */}
             <div
                 ref={scrollRef}
                 onScroll={handleScroll}
@@ -93,14 +78,13 @@ const ComicShelf = ({ title, items }) => {
                 }}
             >
                 {displayItems.map((item, index) => (
-                    // Index as key is necessary here because of duplicates
                     <div key={`${item.id}-${index}`} style={{ minWidth: '220px', maxWidth: '220px', flex: '0 0 auto' }}>
                         <Link to={`/watch/${item.id}`} style={{ textDecoration: 'none' }}>
                             <div className="comic-card" style={{
-                                backgroundColor: 'white',
+                                backgroundColor: 'var(--comic-surface)',
                                 border: 'var(--comic-border)',
                                 padding: '10px',
-                                color: 'black',
+                                color: 'var(--comic-text)',
                                 transition: 'transform 0.2s',
                                 position: 'relative',
                                 height: '100%',
@@ -108,24 +92,24 @@ const ComicShelf = ({ title, items }) => {
                                 flexDirection: 'column'
                             }}>
                                 <div className="thumbnail" style={{
-                                    height: '280px', // Portrait poster style
-                                    backgroundColor: '#ccc',
-                                    border: '2px solid black',
+                                    height: '280px',
+                                    backgroundColor: 'var(--comic-bg)',
+                                    border: '2px solid var(--comic-text)',
                                     marginBottom: '10px',
                                     backgroundImage: `url(${item.thumbnail})`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     position: 'relative'
                                 }}>
-                                    {/* Play Icon/Badge */}
                                     <div style={{
                                         position: 'absolute',
                                         bottom: 5,
                                         right: 5,
                                         backgroundColor: 'var(--comic-secondary)',
-                                        border: '2px solid black',
+                                        border: '2px solid var(--comic-text)',
                                         padding: '2px 5px',
                                         fontSize: '0.8rem',
+                                        color: 'var(--comic-text)',
                                         fontWeight: 'bold'
                                     }}>
                                         PLAY
@@ -133,22 +117,22 @@ const ComicShelf = ({ title, items }) => {
                                 </div>
                                 <h4 style={{ margin: '0 0 5px 0', fontSize: '1rem', fontFamily: 'var(--font-heading)' }}>{item.title}</h4>
 
-                                {/* Speech Bubble - Hidden by default, shown on hover via CSS */}
                                 <div className="speech-bubble" style={{
                                     position: 'absolute',
                                     top: '-15px',
                                     left: '80%',
                                     transform: 'translateX(-50%)',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: 'var(--comic-surface)',
+                                    border: '2px solid var(--comic-text)',
                                     borderRadius: '50% 50% 50% 0',
                                     padding: '10px',
                                     fontSize: '0.8rem',
                                     zIndex: 10,
                                     width: '120px',
                                     textAlign: 'center',
-                                    boxShadow: '3px 3px 0 black',
-                                    display: 'none', // Controlled by CSS
+                                    boxShadow: '3px 3px 0 var(--comic-text)',
+                                    display: 'none',
+                                    color: 'var(--comic-text)'
                                 }}>
                                     <span style={{ fontStyle: 'italic', fontWeight: 'bold' }}>
                                         "{item.description ? (item.description.length > 30 ? item.description.substring(0, 30) + '...' : item.description) : "Must read!"}"
@@ -158,16 +142,13 @@ const ComicShelf = ({ title, items }) => {
                         </Link>
                     </div>
                 ))}
-
-                {/* Spacer removed */}
             </div>
 
-            {/* Shelf Wood Look */}
             <div style={{
                 height: '15px',
-                backgroundColor: '#8B4513',
-                borderTop: '3px solid black',
-                borderBottom: '3px solid black',
+                backgroundColor: '#5D2906',
+                borderTop: 'var(--comic-border)',
+                borderBottom: 'var(--comic-border)',
                 marginTop: '-10px',
                 backgroundImage: 'linear-gradient(45deg, #A0522D 25%, transparent 25%, transparent 75%, #A0522D 75%, #A0522D), linear-gradient(45deg, #A0522D 25%, transparent 25%, transparent 75%, #A0522D 75%, #A0522D)',
                 backgroundSize: '20px 20px',

@@ -30,16 +30,16 @@ const Login = () => {
                 minHeight: '60vh'
             }}>
                 <div style={{
-                    background: '#1a1a1a',
+                    background: 'var(--comic-surface)',
                     padding: '40px',
                     borderRadius: '20px',
-                    border: '4px solid #FFD700',
-                    boxShadow: '10px 10px 0px 0px rgba(0,0,0,1)',
+                    border: 'var(--comic-border)',
+                    boxShadow: 'var(--comic-shadow)',
                     width: '100%',
                     maxWidth: '400px',
-                    color: 'white'
+                    color: 'var(--comic-text)'
                 }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: '#FFD700' }}>Login</h2>
+                    <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: 'var(--comic-secondary)' }}>Login</h2>
                     {error && <p style={{ color: '#ff6b6b', marginBottom: '15px' }}>{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <div style={{ marginBottom: '20px' }}>
@@ -52,9 +52,9 @@ const Login = () => {
                                     width: '100%',
                                     padding: '10px',
                                     borderRadius: '5px',
-                                    border: '2px solid #FFD700',
-                                    background: 'white',
-                                    color: 'black',
+                                    border: '2px solid var(--comic-secondary)',
+                                    background: 'var(--comic-bg)',
+                                    color: 'var(--comic-text)',
                                     fontWeight: 'bold'
                                 }}
                                 required
@@ -70,9 +70,9 @@ const Login = () => {
                                     width: '100%',
                                     padding: '10px',
                                     borderRadius: '5px',
-                                    border: '2px solid #FFD700',
-                                    background: 'white',
-                                    color: 'black',
+                                    border: '2px solid var(--comic-secondary)',
+                                    background: 'var(--comic-bg)',
+                                    color: 'var(--comic-text)',
                                     fontWeight: 'bold'
                                 }}
                                 required
@@ -94,7 +94,7 @@ const Login = () => {
                         </button>
                     </form>
                     <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                        Don't have an account? <Link to="/signup" style={{ color: '#FFD700', textDecoration: 'none' }}>Sign Up</Link>
+                        Don't have an account? <Link to="/signup" style={{ color: 'var(--comic-accent)', textDecoration: 'none' }}>Sign Up</Link>
                     </p>
                 </div>
             </div>
