@@ -56,7 +56,7 @@ const Profile = () => {
                     url="https://wham.cosq.in/profile"
                 />
                 <div style={{ textAlign: 'center', padding: '2rem' }}>
-                    <h1>Identify Yourself!</h1>
+                    <h1 style={{ fontFamily: "'Bangers', cursive" }}>Identify Yourself!</h1>
                     <p style={{ maxWidth: '400px', margin: '1rem auto' }}>
                         Access to citizen files is restricted. Please present your credentials or apply for a new identity.
                     </p>
@@ -99,7 +99,7 @@ const Profile = () => {
                 url="https://wham.cosq.in/profile"
             />
             <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <h1>Citizen Profile</h1>
+                <h1 style={{ fontFamily: "'Bangers', cursive" }}>Citizen Profile</h1>
 
                 <div className="comic-card" style={{
                     background: 'var(--comic-surface)',

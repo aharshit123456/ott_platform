@@ -68,7 +68,14 @@ const PullList = () => {
                     boxSizing: 'border-box',
                     overflow: 'hidden'
                 }}>
-                    <h2 style={{ margin: 0, fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontFamily: 'var(--font-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <h2 style={{
+                        margin: 0,
+                        fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+                        fontFamily: "'Bangers', cursive",
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                    }}>
                         MY PULL LIST
                     </h2>
                 </div>

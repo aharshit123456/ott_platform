@@ -78,11 +78,11 @@ const Layout = ({ children }) => {
             }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)' }}>
                     {isHome ? (
-                        <h1 style={{ margin: 0, fontSize: '2rem' }}>
+                        <h1 style={{ margin: 0, fontSize: '2rem', fontFamily: "'Bangers', cursive" }}>
                             WHAM! OTT
                         </h1>
                     ) : (
-                        <div style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold' }}>
+                        <div style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold', fontFamily: "'Bangers', cursive" }}>
                             WHAM! OTT
                         </div>
                     )}
