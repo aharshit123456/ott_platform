@@ -249,7 +249,7 @@ const VideoPlayer = () => {
             </div>
 
             <div className="video-section">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '15px' }}>
                     <h1 style={{
                         backgroundColor: 'var(--comic-secondary)',
                         display: 'inline-block',
@@ -257,12 +257,13 @@ const VideoPlayer = () => {
                         border: 'var(--comic-border)',
                         transform: 'skew(-10deg)',
                         margin: 0,
-                        fontSize: '2rem'
+                        fontSize: 'clamp(1.5rem, 4vw, 2rem)', // Responsive font size
+                        flexShrink: 1
                     }}>
                         {movie ? movie.title : "NOW PLAYING"}
                     </h1>
 
-                    <div style={{ display: 'flex', gap: '10px' }}>
+                    <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                         {movie?.tmdb_id && movie?.fastpix_playback_id && (
                             <button
                                 onClick={() => setUseVidRock(!useVidRock)}
@@ -272,10 +273,11 @@ const VideoPlayer = () => {
                                     border: 'var(--comic-border)',
                                     padding: '5px 10px',
                                     cursor: 'pointer',
-                                    fontFamily: 'var(--font-heading)'
+                                    fontFamily: 'var(--font-heading)',
+                                    whiteSpace: 'nowrap'
                                 }}
                             >
-                                SWITCH TO {useVidRock ? 'FASTPIX' : 'VIDROCK'}
+                                SWITCH PLAYER
                             </button>
                         )}
                         <div style={{ display: 'flex', gap: '5px' }}>

@@ -177,13 +177,14 @@ const Layout = ({ children }) => {
                 padding: '40px 20px',
                 marginTop: '2rem',
                 color: 'var(--comic-text)',
-                boxShadow: '0 -4px 0 var(--comic-primary)'
+                boxShadow: '0 -4px 0 var(--comic-primary)',
+                paddingBottom: '80px' // Extra padding for BottomNav on mobile
             }}>
                 <div style={{
                     maxWidth: '1200px',
                     margin: '0 auto',
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                     gap: '40px',
                     textAlign: 'left'
                 }}>
@@ -194,8 +195,7 @@ const Layout = ({ children }) => {
                             fontSize: '2rem',
                             marginTop: 0,
                             marginBottom: '1rem',
-                            color: 'var(--comic-primary)',
-                            textShadow: '2px 2px 0 #000'
+                            color: 'var(--comic-primary)'
                         }}>WHAM! OTT</h3>
                         <p style={{ fontStyle: 'italic', lineHeight: '1.6' }}>
                             The ultimate destination for comic-styled entertainment. Streaming the ink directly to your screens in glorious Noir or Color.
