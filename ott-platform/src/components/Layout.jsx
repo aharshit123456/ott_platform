@@ -230,6 +230,28 @@ const Layout = ({ children }) => {
                             </li>
                         </ul>
                     </div>
+
+                    {/* External Links / Socials */}
+                    <div>
+                        <h4 style={{ borderBottom: '2px solid var(--comic-text)', paddingBottom: '10px', marginBottom: '15px' }}>FOLLOW THE ACTION</h4>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginBottom: '10px' }}>
+                                <a href="https://twitter.com/whamott" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>
+                                    ↗ TWITTER (X)
+                                </a>
+                            </li>
+                            <li style={{ marginBottom: '10px' }}>
+                                <a href="https://instagram.com/whamott" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>
+                                    ↗ INSTAGRAM
+                                </a>
+                            </li>
+                            <li style={{ marginBottom: '10px' }}>
+                                <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#666', fontSize: '0.9rem' }}>
+                                    ↗ POWERED BY TMDB
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div style={{

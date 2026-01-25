@@ -278,17 +278,36 @@ const VideoPlayer = () => {
                                 SWITCH TO {useVidRock ? 'FASTPIX' : 'VIDROCK'}
                             </button>
                         )}
-                        <button onClick={togglePullList} style={{
-                            backgroundColor: isInPullList ? '#ccc' : 'var(--comic-primary)',
-                            color: isInPullList ? '#666' : 'white',
-                            border: 'var(--comic-border)',
-                            padding: '10px 20px',
-                            cursor: 'pointer',
-                            fontFamily: 'var(--font-heading)',
-                            fontSize: '1.2rem'
-                        }}>
-                            {isInPullList ? "- REMOVE FROM PULL LIST" : "+ ADD TO PULL LIST"}
-                        </button>
+                        <div style={{ display: 'flex', gap: '5px' }}>
+                            <a
+                                href={`https://twitter.com/intent/tweet?text=Reading ${movie?.title || 'a comic'} on Wham! OTT&url=${window.location.href}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                    backgroundColor: '#1DA1F2',
+                                    color: 'white',
+                                    border: 'var(--comic-border)',
+                                    padding: '10px',
+                                    textDecoration: 'none',
+                                    fontFamily: 'var(--font-heading)',
+                                    display: 'flex',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                TWEET
+                            </a>
+                            <button onClick={togglePullList} style={{
+                                backgroundColor: isInPullList ? '#ccc' : 'var(--comic-primary)',
+                                color: isInPullList ? '#666' : 'white',
+                                border: 'var(--comic-border)',
+                                padding: '10px 20px',
+                                cursor: 'pointer',
+                                fontFamily: 'var(--font-heading)',
+                                fontSize: '1.2rem'
+                            }}>
+                                {isInPullList ? "- REMOVE" : "+ ADD"}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -312,6 +331,20 @@ const VideoPlayer = () => {
                     <p style={{ fontStyle: 'italic', marginBottom: '20px' }}>
                         {movie?.description || "No description available for this issue."}
                     </p>
+
+                    {movie?.tmdb_id && (
+                        <p style={{ marginBottom: '20px', fontSize: '0.9rem' }}>
+                            <span style={{ fontWeight: 'bold' }}>SOURCE DATA: </span>
+                            <a
+                                href={`https://www.themoviedb.org/movie/${movie.tmdb_id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{ color: 'var(--comic-accent)', textDecoration: 'underline' }}
+                            >
+                                View on TheMovieDB ↗
+                            </a>
+                        </p>
+                    )}
 
                     {/* Rating Section */}
                     <div style={{ marginTop: '20px', borderTop: '2px dashed var(--comic-text)', paddingTop: '20px' }}>

@@ -115,6 +115,18 @@ const Home = () => {
                 <>
                     {videos.length > 0 && <HeroSection movies={videos} />}
 
+                    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '40px' }}>
+                        <h2 style={{ fontFamily: "'Bangers', cursive", color: 'var(--comic-primary)', fontSize: '2rem' }}>FROM THE EDITOR'S DESK</h2>
+                        <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
+                            Welcome to <strong>Wham! OTT</strong>, the premier destination for graphic novel enthusiasts and cinema lovers alike.
+                            We bridge the gap between static ink and moving pictures, delivering a unique <em>Noir-style</em> streaming experience.
+                            Powered by cutting-edge technology from <a href="https://fastpix.io" target="_blank" rel="noreferrer" style={{ color: 'var(--comic-accent)' }}>FastPix</a> and
+                            curated data from <a href="https://themoviedb.org" target="_blank" rel="noreferrer" style={{ color: 'var(--comic-accent)' }}>TMDB</a>,
+                            we bring you the latest blockbusters, indie gems, and fan-favorite series. Dive into our collection, manage your "Pull List",
+                            and join a community of heroes.
+                        </p>
+                    </div>
+
                     {continueWatching.length > 0 && (
                         <ComicShelf title="Back into Action!" items={continueWatching} />
                     )}
