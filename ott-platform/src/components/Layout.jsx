@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import BottomNav from './BottomNav';
 
 const Layout = ({ children }) => {
     const { user, loading, signOut } = useAuth();
+    const location = useLocation();
+    const isHome = location.pathname === '/';
     const [showSplash, setShowSplash] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const saved = localStorage.getItem('noir-mode');
@@ -62,7 +64,7 @@ const Layout = ({ children }) => {
     }
 
     return (
-        <div className="comic-layout">
+        <div className="comic-layout" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <header style={{
                 backgroundColor: 'var(--comic-primary)',
                 borderBottom: 'var(--comic-border)',
@@ -75,9 +77,15 @@ const Layout = ({ children }) => {
                 zIndex: 100
             }}>
                 <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)' }}>
-                    <h1 style={{ margin: 0, fontSize: '2rem' }}>
-                        WHAM! OTT
-                    </h1>
+                    {isHome ? (
+                        <h1 style={{ margin: 0, fontSize: '2rem' }}>
+                            WHAM! OTT
+                        </h1>
+                    ) : (
+                        <div style={{ margin: 0, fontSize: '2rem', fontWeight: 'bold' }}>
+                            WHAM! OTT
+                        </div>
+                    )}
                 </Link>
                 <div className="desktop-nav" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                     <button
@@ -159,19 +167,82 @@ const Layout = ({ children }) => {
 
             <BottomNav />
 
-            <main className="comic-container" style={{ minHeight: '80vh' }}>
+            <main className="comic-container" style={{ flex: 1, position: 'relative' }}>
                 {children}
             </main>
 
             <footer style={{
-                backgroundColor: 'black',
-                color: 'white',
-                padding: '20px',
-                textAlign: 'center',
+                backgroundColor: 'var(--comic-surface)',
+                borderTop: '4px solid black',
+                padding: '40px 20px',
                 marginTop: '2rem',
-                fontFamily: 'var(--font-heading)'
+                color: 'var(--comic-text)',
+                boxShadow: '0 -4px 0 var(--comic-primary)'
             }}>
-                <p>&copy; 2026 CosQ Entertainments Pvt. Ltd.</p>
+                <div style={{
+                    maxWidth: '1200px',
+                    margin: '0 auto',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '40px',
+                    textAlign: 'left'
+                }}>
+                    {/* Brand Column */}
+                    <div>
+                        <h3 style={{
+                            fontFamily: "'Bangers', cursive",
+                            fontSize: '2rem',
+                            marginTop: 0,
+                            marginBottom: '1rem',
+                            color: 'var(--comic-primary)',
+                            textShadow: '2px 2px 0 #000'
+                        }}>WHAM! OTT</h3>
+                        <p style={{ fontStyle: 'italic', lineHeight: '1.6' }}>
+                            The ultimate destination for comic-styled entertainment. Streaming the ink directly to your screens in glorious Noir or Color.
+                        </p>
+                    </div>
+
+                    {/* Navigation Column */}
+                    <div>
+                        <h4 style={{ borderBottom: '2px solid var(--comic-text)', paddingBottom: '10px', marginBottom: '15px' }}>NAVIGATION TOWER</h4>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginBottom: '10px' }}>
+                                <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; HOME BASE</Link>
+                            </li>
+                            <li style={{ marginBottom: '10px' }}>
+                                <Link to="/profile" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; CITIZEN PROFILE</Link>
+                            </li>
+                            <li style={{ marginBottom: '10px' }}>
+                                <Link to="/pull-list" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; MY PULL LIST</Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Access Column */}
+                    <div>
+                        <h4 style={{ borderBottom: '2px solid var(--comic-text)', paddingBottom: '10px', marginBottom: '15px' }}>ACCESS CONTROL</h4>
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            <li style={{ marginBottom: '10px' }}>
+                                <Link to="/login" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; LOGIN</Link>
+                            </li>
+                            <li style={{ marginBottom: '10px' }}>
+                                <Link to="/signup" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; JOIN THE SQUAD</Link>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style={{
+                    marginTop: '40px',
+                    paddingTop: '20px',
+                    borderTop: '2px dashed #666',
+                    textAlign: 'center',
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '0.9rem',
+                    opacity: 0.8
+                }}>
+                    <p>&copy; {new Date().getFullYear()} CosQ Entertainments Pvt. Ltd. // ALL RIGHTS RESERVED // "EXCELSIOR!"</p>
+                </div>
             </footer>
         </div>
     );

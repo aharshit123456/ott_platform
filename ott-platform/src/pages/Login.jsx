@@ -3,6 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
+import ClickEffects from '../components/ClickEffects';
+import SEO from '../components/SEO';
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,6 +26,11 @@ const Login = () => {
 
     return (
         <Layout>
+            <SEO
+                title="Login"
+                description="Access your personal comic collection and streaming history on Wham! OTT."
+                url="https://wham.cosq.in/login"
+            />
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -39,7 +47,10 @@ const Login = () => {
                     maxWidth: '400px',
                     color: 'var(--comic-text)'
                 }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: 'var(--comic-secondary)' }}>Login</h2>
+                    <h1 style={{ textAlign: 'center', marginBottom: '10px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: 'var(--comic-secondary)' }}>Login</h1>
+                    <p style={{ textAlign: 'center', marginBottom: '30px', fontStyle: 'italic' }}>
+                        Enter your secret credentials to access the headquarters.
+                    </p>
                     {error && <p style={{ color: '#ff6b6b', marginBottom: '15px' }}>{error}</p>}
                     <form onSubmit={handleSubmit}>
                         <div style={{ marginBottom: '20px' }}>

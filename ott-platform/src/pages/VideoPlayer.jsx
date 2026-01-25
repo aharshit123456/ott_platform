@@ -72,11 +72,34 @@ const VideoPlayer = () => {
                         // If not found in DB, check if the ID itself is a TMDB ID (all numeric)
                         const vidRockEnabled = localStorage.getItem('vidrock-enabled') !== 'false';
                         if (/^\d+$/.test(id) && vidRockEnabled) {
-                            console.log("No DB entry found, but ID appears to be a TMDB ID. Defaulting to VidRock.");
+                            console.log("No DB entry found, but ID appears to be a TMDB ID. Fetching TMDB details...");
+                            const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
+                            let fetchedTitle = "External Title";
+                            let fetchedDesc = "No description available.";
+                            let fetchedThumbnail = null;
+
+                            if (tmdbKey) {
+                                try {
+                                    const tmdbRes = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbKey}`);
+                                    if (tmdbRes.ok) {
+                                        const tmdbData = await tmdbRes.json();
+                                        fetchedTitle = tmdbData.title;
+                                        fetchedDesc = tmdbData.overview;
+                                        if (tmdbData.poster_path) {
+                                            fetchedThumbnail = `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`;
+                                        }
+                                    }
+                                } catch (tmdbErr) {
+                                    console.warn("Failed to fetch TMDB details:", tmdbErr);
+                                }
+                            }
+
                             setMovie({
-                                title: "External Title", // We don't have the title from DB
+                                title: fetchedTitle,
+                                description: fetchedDesc,
                                 tmdb_id: parseInt(id),
-                                media_type: 'movie' // Defaulting to movie
+                                media_type: 'movie',
+                                thumbnail_url: fetchedThumbnail
                             });
                             setUseVidRock(true);
                         }
@@ -227,16 +250,17 @@ const VideoPlayer = () => {
 
             <div className="video-section">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <h2 style={{
+                    <h1 style={{
                         backgroundColor: 'var(--comic-secondary)',
                         display: 'inline-block',
                         padding: '5px 10px',
                         border: 'var(--comic-border)',
                         transform: 'skew(-10deg)',
-                        margin: 0
+                        margin: 0,
+                        fontSize: '2rem'
                     }}>
                         {movie ? movie.title : "NOW PLAYING"}
-                    </h2>
+                    </h1>
 
                     <div style={{ display: 'flex', gap: '10px' }}>
                         {movie?.tmdb_id && movie?.fastpix_playback_id && (

@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
+import SEO from '../components/SEO';
+
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -35,6 +37,11 @@ const Signup = () => {
 
     return (
         <Layout>
+            <SEO
+                title="Sign Up"
+                description="Join the Wham! OTT universe. Create an account to watch movies, track your progress, and review shows."
+                url="https://wham.cosq.in/signup"
+            />
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -51,7 +58,10 @@ const Signup = () => {
                     maxWidth: '400px',
                     color: 'var(--comic-text)'
                 }}>
-                    <h2 style={{ textAlign: 'center', marginBottom: '30px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: 'var(--comic-primary)' }}>Join Us</h2>
+                    <h1 style={{ textAlign: 'center', marginBottom: '10px', fontFamily: "'Bangers', cursive", fontSize: '2.5rem', color: 'var(--comic-primary)' }}>Join Us</h1>
+                    <p style={{ textAlign: 'center', marginBottom: '30px', fontStyle: 'italic' }}>
+                        Create your unique identity and start your own adventure.
+                    </p>
                     {error && <p style={{ color: '#ff6b6b', marginBottom: '15px' }}>{error}</p>}
                     {msg && <p style={{ color: '#51cf66', marginBottom: '15px' }}>{msg}</p>}
                     <form onSubmit={handleSubmit}>

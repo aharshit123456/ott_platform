@@ -50,8 +50,16 @@ const Profile = () => {
     if (!user) {
         return (
             <Layout>
+                <SEO
+                    title="Profile Access"
+                    description="Please log in to view your profile and manage your settings."
+                    url="https://wham.cosq.in/profile"
+                />
                 <div style={{ textAlign: 'center', padding: '2rem' }}>
-                    <h2>Identify Yourself!</h2>
+                    <h1>Identify Yourself!</h1>
+                    <p style={{ maxWidth: '400px', margin: '1rem auto' }}>
+                        Access to citizen files is restricted. Please present your credentials or apply for a new identity.
+                    </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
                         <Link to="/login" style={{
                             textDecoration: 'none',
@@ -91,7 +99,7 @@ const Profile = () => {
                 url="https://wham.cosq.in/profile"
             />
             <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <h2>Citizen Profile</h2>
+                <h1>Citizen Profile</h1>
 
                 <div className="comic-card" style={{
                     background: 'var(--comic-surface)',
