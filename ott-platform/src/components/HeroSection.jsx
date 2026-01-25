@@ -33,7 +33,10 @@ const HeroSection = ({ movies }) => {
             overflow: 'hidden',
             minHeight: '400px',
             display: 'flex',
-            alignItems: 'flex-end'
+            alignItems: 'flex-end',
+            width: '100%',
+            maxWidth: '100%',
+            boxSizing: 'border-box'
         }}>
             {/* Background Image - with Transition Effect Hack */}
             {movies.map((m, i) => (
@@ -94,41 +97,50 @@ const HeroSection = ({ movies }) => {
             }}>&gt;</button>
 
             {/* Content Box */}
+            {/* Content Box */}
             <div style={{
                 position: 'relative',
                 zIndex: 2,
-                padding: '30px',
-                width: '100%'
+                padding: 'clamp(15px, 4vw, 30px)', // Responsive padding
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box'
             }}>
                 <div style={{
                     backgroundColor: 'var(--comic-bg)',
                     color: 'var(--comic-text)',
-                    padding: '20px',
+                    padding: 'clamp(15px, 3vw, 20px)',
                     border: 'var(--comic-border)',
                     maxWidth: '600px',
                     boxShadow: 'var(--comic-shadow)',
                     marginBottom: '20px',
-                    transition: 'all 0.5s'
+                    transition: 'all 0.5s',
+                    width: '100%',
+                    boxSizing: 'border-box'
                 }}>
                     <h2 style={{
-                        fontSize: '3rem',
-                        marginBottom: '10px'
+                        fontSize: 'clamp(1.5rem, 6vw, 3rem)', // Drastically smaller min size
+                        marginBottom: '10px',
+                        lineHeight: '1.1',
+                        wordBreak: 'break-word', // Force wrap long words
+                        hyphens: 'auto'
                     }}>
                         {movie.title}
                     </h2>
                     <p style={{
                         fontFamily: 'var(--font-body)',
-                        fontSize: '1.2rem',
+                        fontSize: 'clamp(0.9rem, 3vw, 1.2rem)',
                         marginBottom: '20px'
                     }}>
                         <span style={{ fontWeight: 'bold' }}>NARRATOR:</span> {movie.description}
                     </p>
                     <Link to={`/watch/${movie.id}`} style={{ textDecoration: 'none' }}>
                         <button style={{
-                            fontSize: '1.5rem',
+                            fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                             backgroundColor: 'var(--comic-primary)',
                             color: 'var(--comic-bg)',
-                            border: 'var(--comic-border)'
+                            border: 'var(--comic-border)',
+                            whiteSpace: 'nowrap'
                         }}>
                             WATCH NOW!
                         </button>

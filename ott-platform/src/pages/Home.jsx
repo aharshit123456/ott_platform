@@ -85,24 +85,45 @@ const Home = () => {
             />
             <ClickEffects />
             {loading && (
-                <div style={{ opacity: 0.5 }}>
+                <div style={{ opacity: 0.5, width: '100%' }}>
                     <div style={{
-                        height: '400px',
+                        height: 'clamp(200px, 40vh, 400px)', // Responsive height
                         backgroundColor: 'var(--comic-surface)',
                         border: 'var(--comic-border)',
                         marginBottom: '40px',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        width: '100%',
+                        overflow: 'hidden'
                     }}>
-                        <h2 style={{ color: 'var(--comic-text)' }}>DRAWING THE COVERS...</h2>
+                        <h2 style={{
+                            color: 'var(--comic-text)',
+                            fontSize: 'clamp(1.2rem, 4vw, 2rem)', // Responsive font
+                            textAlign: 'center',
+                            margin: 0,
+                            padding: '10px'
+                        }}>
+                            DRAWING THE COVERS...
+                        </h2>
                     </div>
                     {[1, 2].map(i => (
                         <div key={i} style={{ marginBottom: '40px' }}>
-                            <div style={{ height: '30px', width: '200px', backgroundColor: 'var(--comic-surface)', marginBottom: '20px', border: 'var(--comic-border)' }}></div>
-                            <div style={{ display: 'flex', gap: '20px', overflow: 'hidden' }}>
+                            <div style={{ height: '30px', width: '200px', maxWidth: '50%', backgroundColor: 'var(--comic-surface)', marginBottom: '20px', border: 'var(--comic-border)' }}></div>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', // Auto-responsive grid
+                                gap: '20px',
+                                width: '100%'
+                            }}>
                                 {[1, 2, 3, 4].map(j => (
-                                    <div key={j} style={{ width: '200px', height: '300px', backgroundColor: 'var(--comic-surface)', border: 'var(--comic-border)', opacity: 0.3 }}></div>
+                                    <div key={j} style={{
+                                        aspectRatio: '2/3',
+                                        backgroundColor: 'var(--comic-surface)',
+                                        border: 'var(--comic-border)',
+                                        opacity: 0.3,
+                                        width: '100%' // Fill the grid cell
+                                    }}></div>
                                 ))}
                             </div>
                         </div>
@@ -115,7 +136,7 @@ const Home = () => {
                 <>
                     {videos.length > 0 && <HeroSection movies={videos} />}
 
-                    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '40px' }}>
+                    <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', marginBottom: '40px' }}>
                         <h2 style={{ fontFamily: "'Bangers', cursive", color: 'var(--comic-primary)', fontSize: '2rem' }}>FROM THE EDITOR'S DESK</h2>
                         <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
                             Welcome to <strong>Wham! OTT</strong>, the premier destination for graphic novel enthusiasts and cinema lovers alike.

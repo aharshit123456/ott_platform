@@ -58,13 +58,17 @@ const PullList = () => {
                 <div style={{
                     backgroundColor: 'var(--comic-secondary)',
                     transform: 'skew(-5deg)',
-                    display: 'inline-block',
+                    display: 'block',
+                    width: 'fit-content',
+                    maxWidth: '100%',
                     padding: '10px 20px',
                     border: '3px solid black',
                     marginBottom: '20px',
-                    boxShadow: '4px 4px 0 black'
+                    boxShadow: '4px 4px 0 black',
+                    boxSizing: 'border-box',
+                    overflow: 'hidden'
                 }}>
-                    <h2 style={{ margin: 0, fontSize: '2.5rem', fontFamily: 'var(--font-heading)' }}>
+                    <h2 style={{ margin: 0, fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontFamily: 'var(--font-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         MY PULL LIST
                     </h2>
                 </div>

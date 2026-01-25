@@ -171,7 +171,7 @@ const Layout = ({ children }) => {
                 {children}
             </main>
 
-            <footer style={{
+            <footer className="app-footer" style={{
                 backgroundColor: 'var(--comic-surface)',
                 borderTop: '4px solid black',
                 padding: '40px 20px',
@@ -180,7 +180,7 @@ const Layout = ({ children }) => {
                 boxShadow: '0 -4px 0 var(--comic-primary)',
                 paddingBottom: '80px' // Extra padding for BottomNav on mobile
             }}>
-                <div style={{
+                <div className="footer-links-grid" style={{
                     maxWidth: '1200px',
                     margin: '0 auto',
                     display: 'grid',
@@ -254,7 +254,7 @@ const Layout = ({ children }) => {
                     </div>
                 </div>
 
-                <div style={{
+                <div className="footer-copyright" style={{
                     marginTop: '40px',
                     paddingTop: '20px',
                     borderTop: '2px dashed #666',

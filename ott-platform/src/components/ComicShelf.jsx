@@ -45,19 +45,29 @@ const ComicShelf = ({ title, items }) => {
     if (!items || items.length === 0) return null;
 
     return (
-        <div className="comic-shelf" style={{ marginBottom: '40px', position: 'relative' }}>
+        <div className="comic-shelf" style={{
+            marginBottom: '40px',
+            position: 'relative',
+            maxWidth: '100vw',
+            overflow: 'hidden',
+            marginLeft: '-20px',
+            marginRight: '-20px',
+            paddingLeft: '20px',
+            paddingRight: '20px'
+        }}>
             <div style={{
                 backgroundColor: 'var(--comic-secondary)',
                 color: 'var(--comic-text)',
-                display: 'inline-block',
+                display: 'block',
+                width: 'fit-content',
+                maxWidth: '90%',
                 padding: '5px 20px',
                 border: 'var(--comic-border)',
                 transform: 'skew(-10deg)',
                 marginBottom: '10px',
-                marginLeft: '20px',
                 boxShadow: 'var(--comic-shadow)'
             }}>
-                <h3 style={{ margin: 0, fontSize: '1.5rem', fontFamily: 'var(--font-heading)' }}>{title}</h3>
+                <h3 style={{ margin: 0, fontSize: 'clamp(1rem, 5vw, 1.5rem)', fontFamily: 'var(--font-heading)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</h3>
             </div>
 
             <div style={{ position: 'absolute', right: '20px', top: '0', zIndex: 5 }}>
@@ -72,9 +82,14 @@ const ComicShelf = ({ title, items }) => {
                     display: 'flex',
                     overflowX: 'auto',
                     gap: '20px',
-                    padding: '20px',
+                    paddingTop: '20px',
+                    paddingBottom: '20px',
+                    paddingLeft: '10px',
+                    paddingRight: '10px',
                     scrollbarWidth: 'none',
-                    msOverflowStyle: 'none'
+                    msOverflowStyle: 'none',
+                    width: '100%',
+                    boxSizing: 'border-box'
                 }}
             >
                 {displayItems.map((item, index) => (
