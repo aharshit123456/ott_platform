@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ComicShelf from '../components/ComicShelf';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../supabaseClient';
+import SEO from '../components/SEO';
 
 const PullList = () => {
     const { user } = useAuth();
@@ -48,6 +49,11 @@ const PullList = () => {
 
     return (
         <Layout>
+            <SEO
+                title="My Pull List | Personal Collection"
+                description="View and manage your reserved comic issues and movies on Wham! OTT."
+                url="https://wham.cosq.in/pull-list"
+            />
             <div style={{ padding: '20px' }}>
                 <div style={{
                     backgroundColor: 'var(--comic-secondary)',

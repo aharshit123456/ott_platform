@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { supabase } from '../supabaseClient';
+import SEO from '../components/SEO';
 
 const Profile = () => {
     const { user, signOut } = useAuth();
@@ -84,6 +85,11 @@ const Profile = () => {
 
     return (
         <Layout>
+            <SEO
+                title={`${user?.user_metadata?.username || 'Hero'} Profile`}
+                description="Manage your Wham! OTT account, platform controls, and reviews."
+                url="https://wham.cosq.in/profile"
+            />
             <div style={{ padding: '2rem', textAlign: 'center' }}>
                 <h2>Citizen Profile</h2>
 

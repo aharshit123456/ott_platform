@@ -6,6 +6,7 @@ import VidRockPlayer from '../components/VidRockPlayer';
 import { useAuth } from '../context/AuthContext';
 import ClickEffects from '../components/ClickEffects';
 import { supabase } from '../supabaseClient';
+import SEO from '../components/SEO';
 
 import GiscusComments from '../components/GiscusComments';
 
@@ -200,6 +201,14 @@ const VideoPlayer = () => {
 
     return (
         <Layout>
+            {movie && (
+                <SEO
+                    title={movie.title}
+                    description={movie.description || `Watch ${movie.title} on Wham! OTT.`}
+                    image={movie.thumbnail_url}
+                    url={`https://wham.cosq.in/watch/${id}`}
+                />
+            )}
             <ClickEffects />
             <div style={{ marginBottom: '20px' }}>
                 <Link to="/" style={{

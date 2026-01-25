@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import HeroSection from '../components/HeroSection';
 import ComicShelf from '../components/ComicShelf';
 import ClickEffects from '../components/ClickEffects';
+import SEO from '../components/SEO';
 
 const Home = () => {
     const [videos, setVideos] = useState([]);
@@ -73,6 +74,11 @@ const Home = () => {
 
     return (
         <Layout>
+            <SEO
+                title="Home | Stream the Ink"
+                description="The ultimate comic-themed streaming platform. Watch original movies, series, and global trending hits in Noir mode."
+                url="https://wham.cosq.in/"
+            />
             <ClickEffects />
             {loading && (
                 <div style={{ opacity: 0.5 }}>
