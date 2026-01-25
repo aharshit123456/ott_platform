@@ -8,6 +8,17 @@ const Profile = () => {
     const { user, signOut } = useAuth();
     const navigate = useNavigate();
     const [reviews, setReviews] = useState([]);
+    const [config, setConfig] = useState({
+        tmdbEnabled: localStorage.getItem('tmdb-enabled') !== 'false',
+        vidrockEnabled: localStorage.getItem('vidrock-enabled') !== 'false'
+    });
+
+    const toggleConfig = (key) => {
+        const newValue = !config[key];
+        const newConfig = { ...config, [key]: newValue };
+        setConfig(newConfig);
+        localStorage.setItem(key === 'tmdbEnabled' ? 'tmdb-enabled' : 'vidrock-enabled', newValue);
+    };
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -43,24 +54,24 @@ const Profile = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
                         <Link to="/login" style={{
                             textDecoration: 'none',
-                            color: 'black',
+                            color: 'var(--comic-text)',
                             fontWeight: 'bold',
-                            backgroundColor: 'white',
+                            backgroundColor: 'var(--comic-surface)',
                             padding: '15px',
-                            border: '2px solid black',
-                            boxShadow: '4px 4px 0px 0px #000000',
+                            border: 'var(--comic-border)',
+                            boxShadow: 'var(--comic-shadow)',
                             fontSize: '1.2rem'
                         }}>
                             LOGIN
                         </Link>
                         <Link to="/signup" style={{
                             textDecoration: 'none',
-                            color: 'white',
+                            color: 'var(--comic-bg)',
                             fontWeight: 'bold',
-                            backgroundColor: 'black',
+                            backgroundColor: 'var(--comic-text)',
                             padding: '15px',
-                            border: '2px solid black',
-                            boxShadow: '4px 4px 0px 0px #000000',
+                            border: 'var(--comic-border)',
+                            boxShadow: 'var(--comic-shadow)',
                             fontSize: '1.2rem'
                         }}>
                             JOIN THE SQUAD (SIGN UP)
@@ -77,23 +88,24 @@ const Profile = () => {
                 <h2>Citizen Profile</h2>
 
                 <div className="comic-card" style={{
-                    background: 'white',
-                    border: '3px solid black',
+                    background: 'var(--comic-surface)',
+                    border: 'var(--comic-border)',
                     padding: '2rem',
                     maxWidth: '400px',
                     margin: '0 auto',
-                    boxShadow: '8px 8px 0px 0px #000000'
+                    boxShadow: 'var(--comic-shadow)',
+                    color: 'var(--comic-text)'
                 }}>
                     <div style={{
                         width: '100px',
                         height: '100px',
                         borderRadius: '50%',
-                        background: '#eee',
+                        background: 'var(--comic-bg)',
                         margin: '0 auto 1rem',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        border: '2px solid black'
+                        border: 'var(--comic-border)'
                     }}>
                         <span style={{ fontSize: '3rem' }}>👤</span>
                     </div>
@@ -101,9 +113,31 @@ const Profile = () => {
                     <h3>{user.user_metadata?.username || 'Hero'}</h3>
                     <p>{user.email}</p>
 
-                    <hr style={{ border: '2px solid black', margin: '1.5rem 0' }} />
+                    <hr style={{ border: 'var(--comic-border)', margin: '1.5rem 0' }} />
 
-                    <button onClick={handleLogout} style={{ width: '100%' }}>
+                    <div style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
+                        <h4 style={{ marginBottom: '10px' }}>PLATFORM CONTROLS:</h4>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                            <span>TMDB TRENDING</span>
+                            <button
+                                onClick={() => toggleConfig('tmdbEnabled')}
+                                style={{ padding: '5px 10px', fontSize: '0.8rem', background: config.tmdbEnabled ? 'var(--comic-primary)' : '#ccc' }}
+                            >
+                                {config.tmdbEnabled ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span>VIDROCK PLAYER</span>
+                            <button
+                                onClick={() => toggleConfig('vidrockEnabled')}
+                                style={{ padding: '5px 10px', fontSize: '0.8rem', background: config.vidrockEnabled ? 'var(--comic-primary)' : '#ccc' }}
+                            >
+                                {config.vidrockEnabled ? 'ON' : 'OFF'}
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onClick={handleLogout} style={{ width: '100%', background: 'var(--comic-text)', color: 'var(--comic-bg)' }}>
                         LOGOUT
                     </button>
                 </div>
@@ -118,12 +152,13 @@ const Profile = () => {
                     <div style={{ display: 'grid', gap: '1rem', marginTop: '1rem' }}>
                         {reviews.map((review) => (
                             <div key={review.id} style={{
-                                border: '2px solid black',
+                                border: 'var(--comic-border)',
                                 padding: '1rem',
                                 display: 'flex',
                                 gap: '1rem',
-                                background: '#fff',
-                                boxShadow: '4px 4px 0px 0px #000'
+                                background: 'var(--comic-surface)',
+                                boxShadow: 'var(--comic-shadow)',
+                                color: 'var(--comic-text)'
                             }}>
                                 {/* Movie Thumbnail if available */}
                                 {review.movies && (

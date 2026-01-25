@@ -63,12 +63,14 @@ const VideoPlayer = () => {
                     if (foundMovie) {
                         setMovie(foundMovie);
                         // If movie has tmdb_id, default to VidRock if requested or if no FastPix
-                        if (foundMovie.tmdb_id) {
+                        const vidRockEnabled = localStorage.getItem('vidrock-enabled') !== 'false';
+                        if (foundMovie.tmdb_id && vidRockEnabled) {
                             setUseVidRock(true);
                         }
                     } else {
                         // If not found in DB, check if the ID itself is a TMDB ID (all numeric)
-                        if (/^\d+$/.test(id)) {
+                        const vidRockEnabled = localStorage.getItem('vidrock-enabled') !== 'false';
+                        if (/^\d+$/.test(id) && vidRockEnabled) {
                             console.log("No DB entry found, but ID appears to be a TMDB ID. Defaulting to VidRock.");
                             setMovie({
                                 title: "External Title", // We don't have the title from DB
