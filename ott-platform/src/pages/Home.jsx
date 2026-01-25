@@ -37,16 +37,20 @@ const Home = () => {
                 const tmdbEnabled = localStorage.getItem('tmdb-enabled') !== 'false';
                 const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
                 if (tmdbKey && tmdbEnabled) {
-                    const tmdbRes = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${tmdbKey}`);
-                    if (tmdbRes.ok) {
-                        const tmdbData = await tmdbRes.json();
-                        const formattedTrending = tmdbData.results.map(m => ({
-                            id: m.id.toString(),
-                            title: m.title,
-                            description: m.overview,
-                            thumbnail: `https://image.tmdb.org/t/p/w500${m.poster_path}`
-                        }));
-                        setTrendingMovies(formattedTrending);
+                    try {
+                        const tmdbRes = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${tmdbKey}`);
+                        if (tmdbRes.ok) {
+                            const tmdbData = await tmdbRes.json();
+                            const formattedTrending = tmdbData.results.map(m => ({
+                                id: m.id.toString(),
+                                title: m.title,
+                                description: m.overview,
+                                thumbnail: `https://image.tmdb.org/t/p/w500${m.poster_path}`
+                            }));
+                            setTrendingMovies(formattedTrending);
+                        }
+                    } catch (tmdbError) {
+                        console.warn("Failed to fetch trending movies from TMDB:", tmdbError);
                     }
                 }
 
