@@ -2,3 +2,4 @@
 /ott-backend/__pycache__
 ott-backend/.env
 ott-backend/.env
+ott-backend/fallback.db

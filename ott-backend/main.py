@@ -1,8 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-# from sqlalchemy.orm import Session
-# import models, schemas, crud, database
-import schemas, crud
+import schemas, crud, database
 import os
 from dotenv import load_dotenv
 import requests
@@ -31,13 +29,10 @@ except ImportError:
 
 load_dotenv()
 
-# We are using Supabase API mostly now, skipping local DB metadata creation which fails
-# try:
-#     models.Base.metadata.create_all(bind=database.engine)
-# except Exception as e:
-#     print(f"Warning: Could not connect to DB to create tables: {e}")
-
 app = FastAPI()
+
+if database.IS_FALLBACK:
+    print("main.py: running against local SQLite fallback (Supabase unreachable)")
 
 app.add_middleware(
     CORSMiddleware,
@@ -80,9 +75,7 @@ if FASTPIX_ACCESS_TOKEN and FASTPIX_SECRET_KEY and Client:
     except Exception as e:
         print(f"Failed to init FastPix client: {e}")
 
-# Fake dependency to keep signature somewhat consistent or just remove it
-def get_db():
-    return None
+get_db = database.get_db
 
 @app.post("/movies/", response_model=schemas.Movie)
 def create_movie(movie: schemas.MovieCreate, db = Depends(get_db)):

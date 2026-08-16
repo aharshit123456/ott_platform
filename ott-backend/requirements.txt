@@ -8,3 +8,6 @@ git+https://github.com/FastPix/fastpix-python.git
 supabase
 gotrue
 websockets>=13.0
+passlib[bcrypt]
+bcrypt<4.1
+python-jose[cryptography]
