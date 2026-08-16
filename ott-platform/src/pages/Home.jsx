@@ -33,12 +33,12 @@ const Home = () => {
 
                 setVideos(formattedVideos);
 
-                // 2. Fetch Trending from TMDB if API key exists AND enabled in settings
+                // 2. Fetch Trending from TMDB (proxied through backend to avoid
+                // slow/blocked direct browser->TMDB requests in some regions)
                 const tmdbEnabled = localStorage.getItem('tmdb-enabled') !== 'false';
-                const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
-                if (tmdbKey && tmdbEnabled) {
+                if (tmdbEnabled) {
                     try {
-                        const tmdbRes = await fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${tmdbKey}`);
+                        const tmdbRes = await fetch(`${import.meta.env.VITE_API_URL}/tmdb/trending`);
                         if (tmdbRes.ok) {
                             const tmdbData = await tmdbRes.json();
                             const formattedTrending = tmdbData.results.map(m => ({

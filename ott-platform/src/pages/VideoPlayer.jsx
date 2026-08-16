@@ -73,25 +73,22 @@ const VideoPlayer = () => {
                         const vidRockEnabled = localStorage.getItem('vidrock-enabled') !== 'false';
                         if (/^\d+$/.test(id) && vidRockEnabled) {
                             console.log("No DB entry found, but ID appears to be a TMDB ID. Fetching TMDB details...");
-                            const tmdbKey = import.meta.env.VITE_TMDB_API_KEY;
                             let fetchedTitle = "External Title";
                             let fetchedDesc = "No description available.";
                             let fetchedThumbnail = null;
 
-                            if (tmdbKey) {
-                                try {
-                                    const tmdbRes = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbKey}`);
-                                    if (tmdbRes.ok) {
-                                        const tmdbData = await tmdbRes.json();
-                                        fetchedTitle = tmdbData.title;
-                                        fetchedDesc = tmdbData.overview;
-                                        if (tmdbData.poster_path) {
-                                            fetchedThumbnail = `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`;
-                                        }
+                            try {
+                                const tmdbRes = await fetch(`${import.meta.env.VITE_API_URL}/tmdb/movie/${id}`);
+                                if (tmdbRes.ok) {
+                                    const tmdbData = await tmdbRes.json();
+                                    fetchedTitle = tmdbData.title;
+                                    fetchedDesc = tmdbData.overview;
+                                    if (tmdbData.poster_path) {
+                                        fetchedThumbnail = `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`;
                                     }
-                                } catch (tmdbErr) {
-                                    console.warn("Failed to fetch TMDB details:", tmdbErr);
                                 }
+                            } catch (tmdbErr) {
+                                console.warn("Failed to fetch TMDB details:", tmdbErr);
                             }
 
                             setMovie({

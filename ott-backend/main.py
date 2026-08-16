@@ -63,6 +63,66 @@ async def global_exception_handler(request: Request, exc: Exception):
 FASTPIX_ACCESS_TOKEN = os.getenv("FASTPIX_ACCESS_TOKEN_ID")
 FASTPIX_SECRET_KEY = os.getenv("FASTPIX_SECRET_KEY")
 
+# TMDB proxy (server-to-server avoids browser-side TMDB latency/blocking in some regions)
+TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+TMDB_CACHE = {"data": None, "fetched_at": 0}
+TMDB_CACHE_TTL_SECONDS = 3600
+
+@app.get("/tmdb/trending")
+def get_tmdb_trending():
+    import time
+    now = time.time()
+    if TMDB_CACHE["data"] is not None and (now - TMDB_CACHE["fetched_at"]) < TMDB_CACHE_TTL_SECONDS:
+        return TMDB_CACHE["data"]
+
+    if not TMDB_API_KEY:
+        raise HTTPException(status_code=500, detail="TMDB_API_KEY not configured")
+
+    try:
+        response = requests.get(
+            "https://api.themoviedb.org/3/trending/movie/day",
+            params={"api_key": TMDB_API_KEY},
+            timeout=10,
+        )
+        response.raise_for_status()
+        data = response.json()
+        TMDB_CACHE["data"] = data
+        TMDB_CACHE["fetched_at"] = now
+        return data
+    except Exception as e:
+        if TMDB_CACHE["data"] is not None:
+            return TMDB_CACHE["data"]
+        raise HTTPException(status_code=502, detail=f"Failed to fetch TMDB trending: {e}")
+
+TMDB_MOVIE_CACHE = {}
+TMDB_MOVIE_CACHE_TTL_SECONDS = 3600
+
+@app.get("/tmdb/movie/{tmdb_id}")
+def get_tmdb_movie(tmdb_id: int):
+    import time
+    now = time.time()
+    cached = TMDB_MOVIE_CACHE.get(tmdb_id)
+    if cached and (now - cached["fetched_at"]) < TMDB_MOVIE_CACHE_TTL_SECONDS:
+        return cached["data"]
+
+    if not TMDB_API_KEY:
+        raise HTTPException(status_code=500, detail="TMDB_API_KEY not configured")
+
+    try:
+        response = requests.get(
+            f"https://api.themoviedb.org/3/movie/{tmdb_id}",
+            params={"api_key": TMDB_API_KEY},
+            timeout=10,
+        )
+        response.raise_for_status()
+        data = response.json()
+        TMDB_MOVIE_CACHE[tmdb_id] = {"data": data, "fetched_at": now}
+        return data
+    except Exception as e:
+        if cached:
+            return cached["data"]
+        raise HTTPException(status_code=502, detail=f"Failed to fetch TMDB movie {tmdb_id}: {e}")
+
 # Auth Router
 import auth
 app.include_router(auth.router)
