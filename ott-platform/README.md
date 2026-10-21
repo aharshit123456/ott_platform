@@ -16,7 +16,9 @@ WHAM! is a discovery network for freelance media production: video, sound, motio
 - **Gigs**: short public briefs anyone can post or respond to.
 - **Landing** (`/`): desktop visitors see the hero and sign up / log in (Supabase auth). Phones open straight into Discover.
 
-Seed people, work and gigs live in `src/wham/data.js`, and shortlists, pings and replies are client-side and simulated for now.
+- **Your profile** (`/me`): create your profile, set availability, and add work with credits for your collaborators.
+
+**Data:** with `VITE_API_URL` set, the app talks to the backend's `/wham` API (see `ott-backend/README.md`) using the Supabase session token, and polls for new replies. Without it, the app runs as an in-memory demo built from `src/wham/data.js`, with simulated replies. Both sources live in `src/wham/source.js` and return the same shapes.
 
 ### ⚠️ Deprecated: WHAM! OTT Classic
 

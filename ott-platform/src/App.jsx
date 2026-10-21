@@ -11,6 +11,7 @@ import Person from './wham/pages/Person';
 import Lists from './wham/pages/Lists';
 import Inbox from './wham/pages/Inbox';
 import Thread from './wham/pages/Thread';
+import MyProfile from './wham/pages/MyProfile';
 
 // The classic OTT app is deprecated and only loaded when someone visits /legacy.
 const LegacyApp = lazy(() => import('./legacy/LegacyApp'));
@@ -34,6 +35,7 @@ function App() {
               <Route path="/lists" element={<Lists />} />
               <Route path="/inbox" element={<Inbox />} />
               <Route path="/inbox/:id" element={<Thread />} />
+              <Route path="/me" element={<MyProfile />} />
             </Route>
 
             <Route path="/legacy/*" element={<Suspense fallback={null}><LegacyApp /></Suspense>} />

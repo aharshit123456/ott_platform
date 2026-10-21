@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useWham } from '../WhamContext';
+import { useWham } from '../hooks';
 import useIsPhone from '../useIsPhone';
 import Sheets from './Sheets';
 import '../wham.css';
 
-const NAV = [['/discover', 'Discover'], ['/lists', 'Lists'], ['/inbox', 'Inbox']];
+const NAV = [['/discover', 'Discover'], ['/lists', 'Lists'], ['/inbox', 'Inbox'], ['/me', 'Profile']];
 
 const AppShell = () => {
     const { user, loading, signOut } = useAuth();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useWham } from '../WhamContext';
+import { useWham } from '../hooks';
 import useIsPhone from '../useIsPhone';
 import { Play } from '../components/ui';
 import '../wham.css';

@@ -3,3 +3,5 @@
 ott-backend/.env
 ott-backend/.env
 ott-backend/fallback.db
+__pycache__/
+.pytest_cache/

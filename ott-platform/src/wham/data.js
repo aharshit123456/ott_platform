@@ -38,10 +38,18 @@ export const GIGS = [
   { id: 'g5', title: 'Photographer for founder portraits', brief: 'Eight founders over two days in Mumbai.', disc: 'Photography', when: 'This month', by: 'priya', resp: '2 responses' },
 ];
 
-export const WEEKS = ['26 Oct', '2 Nov', '9 Nov', '16 Nov', '23 Nov', '30 Nov'];
+const hash = s => Math.abs([...String(s)].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7));
 
-export const personColor = id => COLS[PEOPLE_IDS.indexOf(id) % COLS.length];
-export const workColor = id => COLS[WORKS.findIndex(w => w.id === id) % COLS.length];
-export const firstName = id => PEOPLE[id].name.split(' ')[0];
-export const findWork = id => WORKS.find(w => w.id === id);
-export const worksBy = pid => WORKS.filter(w => w.c.some(c => c[0] === pid));
+// Placeholder colours for reels and avatars. Sample content keeps the colours from the design.
+export const personColor = id => {
+    if (id === 'me') return '#14110f';
+    const i = PEOPLE_IDS.indexOf(String(id).replace(/^seed-/, ''));
+    return COLS[(i >= 0 ? i : hash(id)) % COLS.length];
+};
+export const workColor = w => {
+    const i = WORKS.findIndex(x => x.title === w.title);
+    return COLS[(i >= 0 ? i : hash(w.id)) % COLS.length];
+};
+export const responsesText = n => n === 0 ? 'No responses yet' : n === 1 ? '1 response' : `${n} responses`;
+export const firstName = name => name.split(' ')[0];
+export const subline = p => [p.headline, p.city].filter(Boolean).join(' · ');
