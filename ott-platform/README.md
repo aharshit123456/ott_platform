@@ -4,14 +4,23 @@ A high-performance "Living Comic Book" OTT application developed by **CosQ Enter
 
 ## 🚀 Overview
 
-WHAM! OTT is a unique streaming platform designed with a vibrant comic book aesthetic. Built using React, Vite, and Capacitor for a seamless cross-platform experience (Web & Android).
+WHAM! is a discovery network for freelance media production: video, sound, motion, photo and reels. Every piece of work lists who made it, so watching the work leads you to the right person and a quick ping to start something new.
 
-### 🎨 Key Features
-- **Comic Book Aesthetic**: Custom-designed UI featuring "Living Comic" panels, speech bubbles, and kinetic typography.
-- **FastPix Integration**: High-performance video streaming with prioritized Largest Contentful Paint (LCP).
-- **Social Features**: Interactive review system ("Rants"), user ratings, and personal "Pull Lists" (Watchlists).
-- **Cross-Platform**: Operates as a responsive web app and a native Android application via Capacitor.
-- **Secure Backend**: Python FastAPI backend with token forwarding and Supabase RLS (Row Level Security) for data protection.
+**Watch → Find → Connect**
+
+- **Discover** (`/discover`): three lenses (Work, People, Gigs) with a discipline filter across all of them.
+- **Work** (`/work/:id`): every credit links to the person and is verified by a collaborator.
+- **Profiles** (`/people/:id`): showreel, availability calendar, reply time, turnaround, gear and often-works-with.
+- **Shortlists** (`/lists`): named per idea ("Perfume ad", "Podcast promo"); add people from anywhere.
+- **Pings and Inbox** (`/inbox`): a quick "Interested?" first, details after they reply.
+- **Gigs**: short public briefs anyone can post or respond to.
+- **Landing** (`/`): desktop visitors see the hero and sign up / log in (Supabase auth). Phones open straight into Discover.
+
+Seed people, work and gigs live in `src/wham/data.js`, and shortlists, pings and replies are client-side and simulated for now.
+
+### ⚠️ Deprecated: WHAM! OTT Classic
+
+The original comic-book streaming app now lives under `/legacy` (`src/legacy/`) with a deprecation banner and will be removed. Old URLs (`/watch/:id`, `/pull-list`, `/profile`) redirect there; `/login` and `/signup` open the new auth dialog. Do not add features to `src/legacy/`.
 
 ## 🛠️ Technology Stack
 

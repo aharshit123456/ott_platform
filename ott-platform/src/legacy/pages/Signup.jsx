@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -26,7 +26,7 @@ const Signup = () => {
             });
             if (error) throw error;
             if (data?.session) {
-                navigate('/');
+                navigate('/legacy');
             } else {
                 setMsg('Registration successful! Please check your email for verification.');
             }
@@ -136,7 +136,7 @@ const Signup = () => {
                         </button>
                     </form>
                     <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                        Already a hero? <Link to="/login" style={{ color: '#00d2ff', textDecoration: 'none' }}>Login</Link>
+                        Already a hero? <Link to="/legacy/login" style={{ color: '#00d2ff', textDecoration: 'none' }}>Login</Link>
                     </p>
                 </div>
             </div>

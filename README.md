@@ -1,12 +1,14 @@
 # WHAM! OTT Platform - Master Repository 🛡️✨
 
-Welcome to the official repository for the **WHAM! OTT Platform**, a premium streaming service with a "Living Comic Book" aesthetic, brought to you by **CosQ Entertainments Pvt. Ltd.**
+Welcome to the official repository for **WHAM!**, a discovery network for freelance video, sound, motion and photo creators, brought to you by **CosQ Entertainments Pvt. Ltd.** Watch the work, find the people who made it, and ping them to make the next thing.
+
+> The original comic-book streaming app (WHAM! OTT Classic) is **deprecated**. It is still served under `/legacy` and will be removed.
 
 ## 📂 Repository Structure
 
 This project is divided into two main components:
 
-- **[Frontend (ott-platform)](./ott-platform)**: A cross-platform mobile and web application built with React 19, Vite, and Capacitor JS. Features a custom comic-themed UI and FastPix video integration.
+- **[Frontend (ott-platform)](./ott-platform)**: A cross-platform mobile and web application built with React 19, Vite, and Capacitor JS. The new WHAM! app lives in `src/wham/`; the deprecated classic OTT app lives in `src/legacy/`.
 - **[Backend (ott-backend)](./ott-backend)**: A high-performance Python FastAPI service. Handles movie metadata, user reviews, watchlist logic, and secure Supabase integration with Row Level Security (RLS).
 
 ## 🚀 Quick Start

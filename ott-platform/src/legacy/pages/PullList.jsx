@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import ComicShelf from '../components/ComicShelf';
-import { useAuth } from '../context/AuthContext';
-import { supabase } from '../supabaseClient';
+import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../supabaseClient';
 import SEO from '../components/SEO';
 
 const PullList = () => {
@@ -82,7 +82,7 @@ const PullList = () => {
 
                 {!user && (
                     <div style={{ backgroundColor: 'white', padding: '20px', border: '3px solid black' }}>
-                        <p>Please <a href="/login" style={{ color: 'blue', textDecoration: 'underline' }}>login</a> to view your reserved issues.</p>
+                        <p>Please <a href="/legacy/login" style={{ color: 'blue', textDecoration: 'underline' }}>login</a> to view your reserved issues.</p>
                     </div>
                 )}
 

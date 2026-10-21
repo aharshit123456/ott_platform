@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const BottomNav = () => {
     const { user } = useAuth();
@@ -37,17 +37,17 @@ const BottomNav = () => {
 
     return (
         <nav className="bottom-nav" style={navStyle}>
-            <NavLink to="/" style={linkStyle}>
+            <NavLink to="/legacy" style={linkStyle}>
                 <span style={{ fontSize: '1.5rem', marginBottom: '2px' }}>🏠</span>
                 <span>HOME</span>
             </NavLink>
 
-            <NavLink to={user ? "/pull-list" : "/login"} style={linkStyle}>
+            <NavLink to={user ? "/legacy/pull-list" : "/legacy/login"} style={linkStyle}>
                 <span style={{ fontSize: '1.5rem', marginBottom: '2px' }}>📚</span>
                 <span>MY LIST</span>
             </NavLink>
 
-            <NavLink to="/profile" style={linkStyle}>
+            <NavLink to="/legacy/profile" style={linkStyle}>
                 <span style={{ fontSize: '1.5rem', marginBottom: '2px' }}>👤</span>
                 <span>{user ? 'PROFILE' : 'LOGIN'}</span>
             </NavLink>

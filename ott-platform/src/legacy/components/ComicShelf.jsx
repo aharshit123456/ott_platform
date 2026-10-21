@@ -94,7 +94,7 @@ const ComicShelf = ({ title, items }) => {
             >
                 {displayItems.map((item, index) => (
                     <div key={`${item.id}-${index}`} style={{ minWidth: '220px', maxWidth: '220px', flex: '0 0 auto' }}>
-                        <Link to={`/watch/${item.id}`} style={{ textDecoration: 'none' }}>
+                        <Link to={`/legacy/watch/${item.id}`} style={{ textDecoration: 'none' }}>
                             <div className="comic-card" style={{
                                 backgroundColor: 'var(--comic-surface)',
                                 border: 'var(--comic-border)',

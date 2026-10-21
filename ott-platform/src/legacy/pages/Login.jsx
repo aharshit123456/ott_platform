@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
@@ -18,7 +18,7 @@ const Login = () => {
         try {
             const { error } = await signIn({ email, password });
             if (error) throw error;
-            navigate('/');
+            navigate('/legacy');
         } catch (err) {
             setError(err.message);
         }
@@ -105,7 +105,7 @@ const Login = () => {
                         </button>
                     </form>
                     <p style={{ marginTop: '20px', textAlign: 'center' }}>
-                        Don't have an account? <Link to="/signup" style={{ color: 'var(--comic-accent)', textDecoration: 'none' }}>Sign Up</Link>
+                        Don't have an account? <Link to="/legacy/signup" style={{ color: 'var(--comic-accent)', textDecoration: 'none' }}>Sign Up</Link>
                     </p>
                 </div>
             </div>

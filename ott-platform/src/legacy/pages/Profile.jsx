@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import SEO from '../components/SEO';
 
 const Profile = () => {
@@ -44,7 +44,7 @@ const Profile = () => {
 
     const handleLogout = async () => {
         await signOut();
-        navigate('/login');
+        navigate('/legacy/login');
     };
 
     if (!user) {
@@ -61,7 +61,7 @@ const Profile = () => {
                         Access to citizen files is restricted. Please present your credentials or apply for a new identity.
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
-                        <Link to="/login" style={{
+                        <Link to="/legacy/login" style={{
                             textDecoration: 'none',
                             color: 'var(--comic-text)',
                             fontWeight: 'bold',
@@ -73,7 +73,7 @@ const Profile = () => {
                         }}>
                             LOGIN
                         </Link>
-                        <Link to="/signup" style={{
+                        <Link to="/legacy/signup" style={{
                             textDecoration: 'none',
                             color: 'var(--comic-bg)',
                             fontWeight: 'bold',

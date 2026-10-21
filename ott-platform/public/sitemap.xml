@@ -2,176 +2,158 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://wham.cosq.in/</loc>
-    <lastmod>2026-01-25</lastmod>
+    <lastmod>2026-10-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/pull-list</loc>
-    <lastmod>2026-01-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://wham.cosq.in/discover</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/profile</loc>
-    <lastmod>2026-01-25</lastmod>
+    <loc>https://wham.cosq.in/legacy/watch/1443762</loc>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://wham.cosq.in/login</loc>
-    <lastmod>2026-01-25</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/signup</loc>
-    <lastmod>2026-01-25</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://wham.cosq.in/legacy/watch/1608982</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1443762</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1575337</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1608982</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1220564</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1575337</loc>
+    <loc>https://wham.cosq.in/legacy/watch/5</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1220564</loc>
+    <loc>https://wham.cosq.in/legacy/watch/858024</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/5</loc>
+    <loc>https://wham.cosq.in/legacy/watch/d983edb7-c672-4474-8e41-adc8d4d83b05</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/858024</loc>
+    <loc>https://wham.cosq.in/legacy/watch/680493</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/d983edb7-c672-4474-8e41-adc8d4d83b05</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1306368</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/680493</loc>
+    <loc>https://wham.cosq.in/legacy/watch/83533</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1306368</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1368166</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/83533</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1084242</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1368166</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1062722</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1084242</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1317288</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1062722</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1233413</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1317288</loc>
+    <loc>https://wham.cosq.in/legacy/watch/991494</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1233413</loc>
+    <loc>https://wham.cosq.in/legacy/watch/701387</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/991494</loc>
+    <loc>https://wham.cosq.in/legacy/watch/967941</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/701387</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1208348</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/967941</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1236153</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1208348</loc>
+    <loc>https://wham.cosq.in/legacy/watch/44e33abd-abfe-4e6c-8c22-f5500c72a131</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1236153</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1242898</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/44e33abd-abfe-4e6c-8c22-f5500c72a131</loc>
+    <loc>https://wham.cosq.in/legacy/watch/1054867</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://wham.cosq.in/watch/1242898</loc>
+    <loc>https://wham.cosq.in/legacy/watch/a120e13a-da26-4a0f-bd69-72fbb96edb46</loc>
     <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://wham.cosq.in/watch/1054867</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://wham.cosq.in/watch/a120e13a-da26-4a0f-bd69-72fbb96edb46</loc>
-    <lastmod>2026-01-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.3</priority>
   </url>
 </urlset>
