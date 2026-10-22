@@ -127,6 +127,10 @@ def get_tmdb_movie(tmdb_id: int):
 import auth
 app.include_router(auth.router)
 
+# WHAM! freelance network
+from wham.router import router as wham_router
+app.include_router(wham_router)
+
 # Initialize client only if creds are present to avoid startup errors during dev
 client = None
 if FASTPIX_ACCESS_TOKEN and FASTPIX_SECRET_KEY and Client:

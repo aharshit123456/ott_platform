@@ -3,9 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import FastPixPlayer from '../components/FastPixPlayer';
 import VidRockPlayer from '../components/VidRockPlayer';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import ClickEffects from '../components/ClickEffects';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import SEO from '../components/SEO';
 
 import GiscusComments from '../components/GiscusComments';
@@ -231,7 +231,7 @@ const VideoPlayer = () => {
             )}
             <ClickEffects />
             <div style={{ marginBottom: '20px' }}>
-                <Link to="/" style={{
+                <Link to="/legacy" style={{
                     display: 'inline-block',
                     backgroundColor: 'var(--comic-surface)',
                     border: 'var(--comic-border)',

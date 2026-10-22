@@ -134,7 +134,7 @@ const HeroSection = ({ movies }) => {
                     }}>
                         <span style={{ fontWeight: 'bold' }}>NARRATOR:</span> {movie.description}
                     </p>
-                    <Link to={`/watch/${movie.id}`} style={{ textDecoration: 'none' }}>
+                    <Link to={`/legacy/watch/${movie.id}`} style={{ textDecoration: 'none' }}>
                         <button style={{
                             fontSize: 'clamp(1rem, 4vw, 1.5rem)',
                             backgroundColor: 'var(--comic-primary)',

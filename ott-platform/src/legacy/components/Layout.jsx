@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import BottomNav from './BottomNav';
+import DeprecationBanner from './DeprecationBanner';
 
 const Layout = ({ children }) => {
     const { user, loading, signOut } = useAuth();
     const location = useLocation();
-    const isHome = location.pathname === '/';
+    const isHome = location.pathname === '/legacy';
     const [showSplash, setShowSplash] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const saved = localStorage.getItem('noir-mode');
@@ -65,6 +66,7 @@ const Layout = ({ children }) => {
 
     return (
         <div className="comic-layout" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <DeprecationBanner />
             <header style={{
                 backgroundColor: 'var(--comic-primary)',
                 borderBottom: 'var(--comic-border)',
@@ -76,7 +78,7 @@ const Layout = ({ children }) => {
                 top: 0,
                 zIndex: 100
             }}>
-                <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)' }}>
+                <Link to="/legacy" style={{ textDecoration: 'none', color: 'var(--comic-text)' }}>
                     {isHome ? (
                         <h1 style={{ margin: 0, fontSize: '2rem', fontFamily: "'Bangers', cursive" }}>
                             WHAM! OTT
@@ -103,7 +105,7 @@ const Layout = ({ children }) => {
                     </button>
                     {user ? (
                         <>
-                            <Link to="/pull-list" style={{
+                            <Link to="/legacy/pull-list" style={{
                                 marginRight: '15px',
                                 textDecoration: 'none',
                                 color: 'var(--comic-text)',
@@ -117,7 +119,7 @@ const Layout = ({ children }) => {
                             >
                                 MY PULL LIST
                             </Link>
-                            <Link to="/profile" className="user-badge" style={{
+                            <Link to="/legacy/profile" className="user-badge" style={{
                                 backgroundColor: 'var(--comic-surface)',
                                 border: 'var(--comic-border)',
                                 padding: '5px 10px',
@@ -146,7 +148,7 @@ const Layout = ({ children }) => {
                         </>
                     ) : (
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <Link to="/login" style={{
+                            <Link to="/legacy/login" style={{
                                 textDecoration: 'none',
                                 color: 'var(--comic-text)',
                                 fontWeight: 'bold',
@@ -156,7 +158,7 @@ const Layout = ({ children }) => {
                             }}>
                                 LOGIN
                             </Link>
-                            <Link to="/signup" style={{
+                            <Link to="/legacy/signup" style={{
                                 textDecoration: 'none',
                                 color: 'white',
                                 fontWeight: 'bold',
@@ -213,13 +215,13 @@ const Layout = ({ children }) => {
                         <h4 style={{ borderBottom: '2px solid var(--comic-text)', paddingBottom: '10px', marginBottom: '15px' }}>NAVIGATION TOWER</h4>
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <li style={{ marginBottom: '10px' }}>
-                                <Link to="/" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; HOME BASE</Link>
+                                <Link to="/legacy" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; HOME BASE</Link>
                             </li>
                             <li style={{ marginBottom: '10px' }}>
-                                <Link to="/profile" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; CITIZEN PROFILE</Link>
+                                <Link to="/legacy/profile" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; CITIZEN PROFILE</Link>
                             </li>
                             <li style={{ marginBottom: '10px' }}>
-                                <Link to="/pull-list" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; MY PULL LIST</Link>
+                                <Link to="/legacy/pull-list" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; MY PULL LIST</Link>
                             </li>
                         </ul>
                     </div>
@@ -229,10 +231,10 @@ const Layout = ({ children }) => {
                         <h4 style={{ borderBottom: '2px solid var(--comic-text)', paddingBottom: '10px', marginBottom: '15px' }}>ACCESS CONTROL</h4>
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <li style={{ marginBottom: '10px' }}>
-                                <Link to="/login" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; LOGIN</Link>
+                                <Link to="/legacy/login" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; LOGIN</Link>
                             </li>
                             <li style={{ marginBottom: '10px' }}>
-                                <Link to="/signup" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; JOIN THE SQUAD</Link>
+                                <Link to="/legacy/signup" style={{ textDecoration: 'none', color: 'var(--comic-text)', fontWeight: 'bold' }}>&gt; JOIN THE SQUAD</Link>
                             </li>
                         </ul>
                     </div>

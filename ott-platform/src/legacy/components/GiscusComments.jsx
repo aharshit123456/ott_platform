@@ -15,7 +15,9 @@ const GiscusComments = ({ theme = 'light' }) => {
         script.setAttribute('data-repo-id', "R_kgDORAnpJw");
         script.setAttribute('data-category', "Comments");
         script.setAttribute('data-category-id', "DIC_kwDORAnpJ84C1Ym_");
-        script.setAttribute('data-mapping', "pathname");
+        // Classic pages moved under /legacy; map to the original pathname so existing threads still match.
+        script.setAttribute('data-mapping', "specific");
+        script.setAttribute('data-term', window.location.pathname.replace(/^\/legacy/, '').replace(/^\//, '') || 'index');
         script.setAttribute('data-strict', "0");
         script.setAttribute('data-reactions-enabled', "1");
         script.setAttribute('data-emit-metadata', "0");

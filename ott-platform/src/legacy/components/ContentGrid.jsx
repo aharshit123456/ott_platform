@@ -10,7 +10,7 @@ const ContentGrid = ({ items }) => {
             marginTop: '20px'
         }}>
             {items.map((item) => (
-                <Link to={`/watch/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
+                <Link to={`/legacy/watch/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
                     <div className="comic-card" style={{
                         backgroundColor: 'white',
                         border: 'var(--comic-border)',
